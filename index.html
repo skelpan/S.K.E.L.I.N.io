@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>S.K.E.L.I.N - Интеллектуальная система</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#ff003c">
+    <meta name="description" content="S.K.E.L.I.N - Самообучающаяся Система Единица Личности И Нейронов">
+</head>
+<body>
+    <!-- Анимированный фон -->
+    <div class="cyber-grid"></div>
+    <div class="particles-container" id="particles"></div>
+    
+    <!-- Неоновые линии -->
+    <div class="neon-line horizontal top"></div>
+    <div class="neon-line horizontal bottom"></div>
+    <div class="neon-line vertical left"></div>
+    <div class="neon-line vertical right"></div>
+
+    <!-- Главное меню -->
+    <nav class="main-nav">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <div class="logo-pulse"></div>
+                <i class="fas fa-brain"></i>
+                <span>S.K.E.L.I.N</span>
+            </div>
+            <div class="nav-menu">
+                <button class="nav-btn active" data-section="main">
+                    <i class="fas fa-home"></i>
+                    <span>Главная</span>
+                </button>
+                <button class="nav-btn" data-section="systems">
+                    <i class="fas fa-microchip"></i>
+                    <span>Системы</span>
+                </button>
+                <button class="nav-btn" data-section="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Аналитика</span>
+                </button>
+                <button class="nav-btn" data-section="security">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Безопасность</span>
+                </button>
+                <button class="nav-btn" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Настройки</span>
+                </button>
+            </div>
+            <div class="nav-status">
+                <div class="status-pulse"></div>
+                <span>АКТИВНЫЙ РЕЖИМ</span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <!-- Главная панель -->
+        <section id="main-section" class="section active">
+            <div class="main-panel">
+                <div class="header">
+                    <div class="logo">
+                        <div class="logo-icon">
+                            <div class="system-orb"></div>
+                            <i class="fas fa-brain"></i>
+                            <div class="pulse-ring"></div>
+                        </div>
+                        <div class="logo-text">
+                            <span class="main-text">S.K.E.L.I.N</span>
+                            <span class="sub-text">Самообучающаяся Система Единица Личности И Нейронов</span>
+                            <span class="author">by skelpan</span>
+                        </div>
+                    </div>
+                    
+                    <div class="system-status">
+                        <div class="status-item" id="computation-status">
+                            <div class="status-label">ВЫЧИСЛЕНИЯ</div>
+                            <div class="status-bar">
+                                <div class="status-fill" data-value="87"></div>
+                            </div>
+                        </div>
+                        <div class="status-item" id="neural-status">
+                            <div class="status-label">НЕЙРОНЫ</div>
+                            <div class="status-bar">
+                                <div class="status-fill" data-value="92"></div>
+                            </div>
+                        </div>
+                        <div class="status-item" id="learning-status">
+                            <div class="status-label">ОБУЧЕНИЕ</div>
+                            <div class="status-indicator active"></div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Основной дисплей -->
+                <div class="system-display">
+                    <div class="system-frame">
+                        <div class="chat-container" id="chat-container">
+                            <div class="message skelin-message">
+                                <div class="message-avatar">
+                                    <div class="system-pulse"></div>
+                                    <i class="fas fa-brain"></i>
+                                </div>
+                                <div class="message-content">
+                                    <div class="message-text">Система S.K.E.L.I.N активирована. Все модули готовы к работе.</div>
+                                    <div class="message-time" data-time="new"></div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Визуализатор активности -->
+                        <div class="activity-visualizer" id="activity-visualizer">
+                            <div class="activity-bars">
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                                <div class="activity-bar"></div>
+                            </div>
+                            <div class="activity-text">АНАЛИЗ АКТИВНОСТИ СИСТЕМЫ...</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Панель управления -->
+                <div class="control-panel">
+                    <div class="input-group">
+                        <div class="system-input">
+                            <input type="text" id="text-input" placeholder="ВВЕДИТЕ КОМАНДУ...">
+                            <div class="input-glow"></div>
+                        </div>
+                        <button class="control-btn voice-btn" id="voice-btn" data-tooltip="Голосовой ввод">
+                            <i class="fas fa-microphone"></i>
+                            <div class="btn-glow"></div>
+                        </button>
+                        <button class="control-btn send-btn" id="send-btn" data-tooltip="Отправить">
+                            <i class="fas fa-paper-plane"></i>
+                            <div class="btn-glow"></div>
+                        </button>
+                    </div>
+                    
+                    <div class="system-actions">
+                        <button class="action-btn" data-command="статус системы" data-tooltip="Статус">
+                            <i class="fas fa-heartbeat"></i>
+                        </button>
+                        <button class="action-btn" data-command="нейронный анализ" data-tooltip="Анализ">
+                            <i class="fas fa-chart-network"></i>
+                        </button>
+                        <button class="action-btn" data-command="активировать защиту" data-tooltip="Защита">
+                            <i class="fas fa-shield-alt"></i>
+                        </button>
+                        <button class="action-btn" data-command="показать карту" data-tooltip="Карта">
+                            <i class="fas fa-map-marked-alt"></i>
+                        </button>
+                        <button class="action-btn" data-command="команды" data-tooltip="Команды">
+                            <i class="fas fa-terminal"></i>
+                        </button>
+                        <button class="action-btn" data-command="настройки" data-tooltip="Настройки">
+                            <i class="fas fa-cog"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Боковая панель виджетов -->
+            <div class="sidebar">
+                <!-- Виджет времени -->
+                <div class="widget system-panel">
+                    <div class="widget-header">
+                        <i class="fas fa-clock"></i>
+                        <span>СИСТЕМНОЕ ВРЕМЯ</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="system-time">
+                            <div class="system-clock" id="system-clock">--:--:--</div>
+                            <div class="system-date" id="system-date">-- --- ----</div>
+                            <div class="time-status">Синхронизировано</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Виджет производительности -->
+                <div class="widget system-panel">
+                    <div class="widget-header">
+                        <i class="fas fa-microchip"></i>
+                        <span>ПРОИЗВОДИТЕЛЬНОСТЬ</span>
+                        <div class="widget-actions">
+                            <button class="icon-btn" id="refresh-performance">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="performance-metrics" id="performance-metrics">
+                            <div class="performance-loading">
+                                <div class="system-spinner"></div>
+                                <span>АНАЛИЗ СИСТЕМЫ...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Виджет нейронной сети -->
+                <div class="widget system-panel">
+                    <div class="widget-header">
+                        <i class="fas fa-network-wired"></i>
+                        <span>НЕЙРОННАЯ СЕТЬ</span>
+                    </div>
+                    <div class="widget-content">
+                        <div class="neural-metrics">
+                            <div class="metric">
+                                <div class="metric-info">
+                                    <span class="metric-label">АКТИВНЫЕ ЯДРА</span>
+                                    <span class="metric-value" id="neurons-value">--</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" id="neurons-fill" data-value="0"></div>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-info">
+                                    <span class="metric-label">СЕТЕВЫЕ СВЯЗИ</span>
+                                    <span class="metric-value" id="connections-value">--</span>
+                                </div>
+                                <div class="metric-bar">
+                                    <div class="metric-fill" id="connections-fill" data-value="0"></div>
+                                </div>
+                            </div>
+                            <div class="metric">
+                                <div class="metric-info">
+                                    <span class="metric-label">ОБУЧЕНИЕ</span>
+                                    <span class="metric-value" id="learning-value">АКТИВНО</span>
+                                </div>
+                                <div class="metric-indicator active" id="learning-indicator"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Виджет системных событий -->
+                <div class="widget system-panel">
+                    <div class="widget-header">
+                        <i class="fas fa-newspaper"></i>
+                        <span>СОБЫТИЯ СИСТЕМЫ</span>
+                        <div class="widget-actions">
+                            <button class="icon-btn" id="refresh-events">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="system-events" id="system-events">
+                            <div class="system-loading">
+                                <div class="system-spinner"></div>
+                                <span>ЗАГРУЗКА СОБЫТИЙ...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Системы управления -->
+        <section id="systems-section" class="section">
+            <div class="systems-grid">
+                <div class="system-card">
+                    <div class="system-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>Нейронные Сети</h3>
+                    <div class="system-controls">
+                        <button class="system-btn" data-system="deep-learning">
+                            <i class="fas fa-graduation-cap"></i>
+                            Глубокое обучение
+                        </button>
+                        <button class="system-btn" data-system="pattern-recognition">
+                            <i class="fas fa-fingerprint"></i>
+                            Распознавание
+                        </button>
+                        <button class="system-btn" data-system="neural-optimization">
+                            <i class="fas fa-rocket"></i>
+                            Оптимизация
+                        </button>
+                    </div>
+                </div>
+
+                <div class="system-card">
+                    <div class="system-icon">
+                        <i class="fas fa-calculator"></i>
+                    </div>
+                    <h3>Вычислительные Процессы</h3>
+                    <div class="system-controls">
+                        <button class="system-btn" data-system="computation">
+                            <i class="fas fa-calculator"></i>
+                            Вычисления
+                        </button>
+                        <button class="system-btn" data-system="synchronization">
+                            <i class="fas fa-link"></i>
+                            Синхронизация
+                        </button>
+                        <button class="system-btn" data-system="parallel-processing">
+                            <i class="fas fa-layer-group"></i>
+                            Параллелизм
+                        </button>
+                    </div>
+                </div>
+
+                <div class="system-card">
+                    <div class="system-icon">
+                        <i class="fas fa-network-wired"></i>
+                    </div>
+                    <h3>Сетевая Инфраструктура</h3>
+                    <div class="system-controls">
+                        <button class="system-btn" data-system="network">
+                            <i class="fas fa-satellite"></i>
+                            Сеть
+                        </button>
+                        <button class="system-btn" data-system="data-streams">
+                            <i class="fas fa-stream"></i>
+                            Потоки данных
+                        </button>
+                        <button class="system-btn" data-system="api-gateways">
+                            <i class="fas fa-door-open"></i>
+                            API шлюзы
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Панель статуса систем -->
+                <div class="system-card wide">
+                    <h3><i class="fas fa-tasks"></i> Статус Систем</h3>
+                    <div class="system-status-panel" id="system-status-panel">
+                        <div class="status-message">Системы готовы к активации</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Аналитика -->
+        <section id="analytics-section" class="section">
+            <div class="analytics-dashboard">
+                <div class="analytics-card wide">
+                    <h3><i class="fas fa-chart-network"></i> Производительность Системы</h3>
+                    <div class="analytics-content">
+                        <div class="analytics-chart">
+                            <div class="chart-container" id="performance-chart">
+                                <canvas id="metricsChart" width="400" height="200"></canvas>
+                            </div>
+                        </div>
+                        <div class="analytics-stats">
+                            <div class="analytics-stat">
+                                <div class="stat-value" id="processing-cores">225</div>
+                                <div class="stat-label">Процессорные ядра</div>
+                            </div>
+                            <div class="analytics-stat">
+                                <div class="stat-value" id="efficiency-level">95%</div>
+                                <div class="stat-label">Эффективность</div>
+                            </div>
+                            <div class="analytics-stat">
+                                <div class="stat-value" id="stability-time">2.1s</div>
+                                <div class="stat-label">Стабильность</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="analytics-card">
+                    <h3><i class="fas fa-map-marked-alt"></i> Карта Активности</h3>
+                    <div class="activity-map" id="activity-map">
+                        <div class="map-container">
+                            <div class="map-coordinates">
+                                <div class="coordinate">Широта: <span id="latitude">55.7558</span>°</div>
+                                <div class="coordinate">Долгота: <span id="longitude">37.6173</span>°</div>
+                                <div class="location">Москва, Россия</div>
+                            </div>
+                            <div class="map-overlay">
+                                <div class="active-nodes">
+                                    <div class="node" style="top: 30%; left: 40%;"></div>
+                                    <div class="node" style="top: 60%; left: 70%;"></div>
+                                    <div class="node" style="top: 45%; left: 25%;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Безопасность -->
+        <section id="security-section" class="section">
+            <div class="security-dashboard">
+                <div class="security-card">
+                    <h3><i class="fas fa-shield-alt"></i> Система Безопасности</h3>
+                    <div class="security-status">
+                        <div class="security-item critical">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <span>Обнаружены угрозы: <strong>2</strong></span>
+                        </div>
+                        <div class="security-item warning">
+                            <i class="fas fa-eye"></i>
+                            <span>Мониторинг: <strong>активен</strong></span>
+                        </div>
+                        <div class="security-item safe">
+                            <i class="fas fa-check-circle"></i>
+                            <span>Шифрование: <strong>активно</strong></span>
+                        </div>
+                    </div>
+                    
+                    <div class="security-controls">
+                        <h4>Повышение уровня доступа</h4>
+                        <div class="access-input-group">
+                            <div class="access-input">
+                                <label>Ключ доступа 1:</label>
+                                <input type="password" id="access-key-1" placeholder="Введите первый ключ" class="security-input">
+                            </div>
+                            <div class="access-input">
+                                <label>Ключ доступа 2:</label>
+                                <input type="password" id="access-key-2" placeholder="Введите второй ключ" class="security-input">
+                            </div>
+                            <button class="btn primary" id="authenticate-btn">
+                                <i class="fas fa-key"></i> Аутентификация
+                            </button>
+                        </div>
+                        <div class="access-level">
+                            Текущий уровень доступа: <span id="current-access-level">1</span>
+                        </div>
+                        <div class="security-result" id="security-result"></div>
+                    </div>
+                </div>
+
+                <div class="security-card">
+                    <h3><i class="fas fa-lock"></i> Уровни Защиты</h3>
+                    <div class="security-grid">
+                        <div class="security-system">
+                            <div class="system-status-card">
+                                <i class="fas fa-fingerprint"></i>
+                                <h4>Биометрическая защита</h4>
+                                <div class="system-status active">активна</div>
+                                <button class="btn small" data-system="biometric">Проверить</button>
+                            </div>
+                        </div>
+                        <div class="security-system">
+                            <div class="system-status-card">
+                                <i class="fas fa-key"></i>
+                                <h4>Криптографические ключи</h4>
+                                <div class="system-status active">активны</div>
+                                <button class="btn small" data-system="encryption">Обновить</button>
+                            </div>
+                        </div>
+                        <div class="security-system">
+                            <div class="system-status-card">
+                                <i class="fas fa-shield-alt"></i>
+                                <h4>Файрвол</h4>
+                                <div class="system-status active">активен</div>
+                                <button class="btn small" data-system="firewall">Настроить</button>
+                            </div>
+                        </div>
+                        <div class="security-system">
+                            <div class="system-status-card">
+                                <i class="fas fa-history"></i>
+                                <h4>Резервное копирование</h4>
+                                <div class="system-status">ожидание</div>
+                                <button class="btn small" data-system="backup">Запустить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Настройки -->
+        <section id="settings-section" class="section">
+            <div class="settings-panel">
+                <div class="settings-section">
+                    <h3><i class="fas fa-palette"></i> Внешний Вид</h3>
+                    <div class="system-themes">
+                        <div class="theme-option active" data-theme="system-red">
+                            <div class="theme-preview system-red"></div>
+                            <span>Системный красный</span>
+                        </div>
+                        <div class="theme-option" data-theme="neural-matrix">
+                            <div class="theme-preview neural-matrix"></div>
+                            <span>Нейронная матрица</span>
+                        </div>
+                        <div class="theme-option" data-theme="dark-void">
+                            <div class="theme-preview dark-void"></div>
+                            <span>Темная пустота</span>
+                        </div>
+                        <div class="theme-option" data-theme="cyber-purple">
+                            <div class="theme-preview cyber-purple"></div>
+                            <span>Кибер-фиолетовый</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3><i class="fas fa-volume-up"></i> Голосовой Модуль</h3>
+                    <div class="voice-settings">
+                        <div class="voice-controls">
+                            <div class="voice-param">
+                                <label>Скорость: <span id="rate-value">1.0</span></label>
+                                <input type="range" id="voice-rate" min="0.5" max="1.5" step="0.1" value="1.0">
+                            </div>
+                            
+                            <div class="voice-param">
+                                <label>Тон: <span id="pitch-value">1.0</span></label>
+                                <input type="range" id="voice-pitch" min="0.5" max="1.5" step="0.1" value="1.0">
+                            </div>
+                            
+                            <div class="voice-param">
+                                <label>Громкость: <span id="volume-value">0.8</span></label>
+                                <input type="range" id="voice-volume" min="0.1" max="1.0" step="0.1" value="0.8">
+                            </div>
+                        </div>
+                        
+                        <div class="voice-presets">
+                            <button class="btn small" data-preset="standard">
+                                <i class="fas fa-user"></i> Стандартный
+                            </button>
+                            <button class="btn small" data-preset="professional">
+                                <i class="fas fa-suitcase"></i> Профессиональный
+                            </button>
+                            <button class="btn small" data-preset="assistant">
+                                <i class="fas fa-robot"></i> Ассистент
+                            </button>
+                        </div>
+                        
+                        <div class="voice-test">
+                            <button class="btn secondary" id="test-voice">
+                                <i class="fas fa-play"></i> Проверить голос
+                            </button>
+                            <div class="voice-info">
+                                <i class="fas fa-info-circle"></i>
+                                <span>Используется мужской голос</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <h3><i class="fas fa-terminal"></i> Доступные Команды</h3>
+                    <div class="system-commands">
+                        <div class="command-category">
+                            <h4>Управление системами:</h4>
+                            <div class="command-item">"статус системы" - общее состояние</div>
+                            <div class="command-item">"активировать защиту" - включить безопасность</div>
+                            <div class="command-item">"показать системы" - список модулей</div>
+                            <div class="command-item">"нейронный анализ" - анализ данных</div>
+                        </div>
+                        <div class="command-category">
+                            <h4>Нейронные сети:</h4>
+                            <div class="command-item">"обучение" - запустить обучение</div>
+                            <div class="command-item">"оптимизация" - оптимизировать сети</div>
+                            <div class="command-item">"анализ данных" - обработка информации</div>
+                        </div>
+                        <div class="command-category">
+                            <h4>Безопасность:</h4>
+                            <div class="command-item">"ключ доступа" - аутентификация</div>
+                            <div class="command-item">"мониторинг" - статус защиты</div>
+                            <div class="command-item">"сканирование" - проверка системы</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Системные уведомления -->
+    <div class="system-notifications" id="system-notifications"></div>
+
+    <!-- Подключаем Chart.js для графиков -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>

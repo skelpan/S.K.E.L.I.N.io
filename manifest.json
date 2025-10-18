@@ -1,0 +1,17 @@
+{
+    "name": "S.K.E.L.I.N - Интеллектуальная система",
+    "short_name": "S.K.E.L.I.N",
+    "description": "Самообучающаяся Система Единица Личности И Нейронов",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#0a0a0a",
+    "theme_color": "#ff003c",
+    "orientation": "landscape",
+    "icons": [
+        {
+            "src": "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgdmlld0JveD0iMCAwIDUxMiA1MTIiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjxyZWN0IHdpZHRoPSI1MTIiIGhlaWdodD0iNTEyIiByeD0iNjQiIGZpbGw9IiNmZjAwM2MiLz4KPHBhdGggZD0iTTI1NiA0MDBMMzIwIDI1NkwyNTYgMTEyTDE5MiAyNTZMMjU2IDQwMFoiIGZpbGw9IiNmZmZmZmYiLz4KPGNpcmNsZSBjeD0iMjU2IiBjeT0iMjU2IiByPSI0OCIgZmlsbD0iI2ZmMDAzYyIvPgo8L3N2Zz4K",
+            "sizes": "512x512",
+            "type": "image/svg+xml"
+        }
+    ]
+}
