@@ -26,6 +26,14 @@ let state = {
         latitude: 55.7558,
         longitude: 37.6173,
         city: 'Москва'
+    },
+    notes: JSON.parse(localStorage.getItem('skelin-notes')) || [],
+    weather: {
+        temp: null,
+        description: null,
+        humidity: null,
+        windSpeed: null,
+        pressure: null
     }
 };
 
@@ -301,6 +309,7 @@ const SecurityManager = {
         
         if (key1 === this.correctKey1 && key2 === this.correctKey2) {
             state.settings.accessLevel = 3;
+            localStorage.setItem('skelin-settings', JSON.stringify(state.settings));
             accessLevel.textContent = '3';
             result.className = 'security-result success';
             result.innerHTML = `
@@ -339,6 +348,14 @@ const SecurityManager = {
         // Обновляем статус безопасности
         state.security.threats = 0;
         updateSecurityStatus();
+        
+        // Показываем уведомление
+        showNotification('Дополнительные функции разблокированы!', 'success');
+        
+        // Обновляем интерфейс
+        document.querySelectorAll('.security-system').forEach(el => {
+            el.classList.add('unlocked-feature');
+        });
     },
     
     addSecurityEvent(message, type) {
@@ -361,6 +378,332 @@ const SecurityManager = {
     }
 };
 
+// Модуль погоды
+const WeatherManager = {
+    apiKey: 'bd5e378503939ddaee76f12ad7a97608',
+    currentCity: 'Москва',
+    
+    init() {
+        this.getCurrentLocation();
+    },
+    
+    getCurrentLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(
+                position => {
+                    state.location.latitude = position.coords.latitude;
+                    state.location.longitude = position.coords.longitude;
+                    this.getWeatherByCoords(position.coords.latitude, position.coords.longitude);
+                    updateLocation();
+                },
+                error => {
+                    console.log('Геолокация недоступна:', error);
+                    this.getWeatherByCity('Москва');
+                }
+            );
+        } else {
+            this.getWeatherByCity('Москва');
+        }
+    },
+    
+    async getWeatherByCoords(lat, lon) {
+        try {
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${this.apiKey}&units=metric&lang=ru`);
+            if (!response.ok) throw new Error('Ошибка сети');
+            const data = await response.json();
+            this.updateWeatherDisplay(data);
+        } catch (error) {
+            console.log('Ошибка загрузки погоды:', error);
+            this.showWeatherError();
+        }
+    },
+    
+    async getWeatherByCity(city) {
+        try {
+            const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${this.apiKey}&units=metric&lang=ru`);
+            if (!response.ok) throw new Error('Город не найден');
+            const data = await response.json();
+            this.currentCity = city;
+            this.updateWeatherDisplay(data);
+        } catch (error) {
+            console.log('Ошибка загрузки погоды:', error);
+            this.showWeatherError();
+            showNotification('Город не найден', 'error');
+        }
+    },
+    
+    updateWeatherDisplay(data) {
+        // Обновляем виджет погоды
+        const weatherWidget = document.getElementById('weather-widget');
+        if (weatherWidget) {
+            const weatherIcon = this.getWeatherIcon(data.weather[0].icon);
+            weatherWidget.innerHTML = `
+                <div class="weather-icon">${weatherIcon}</div>
+                <div class="weather-temp">${Math.round(data.main.temp)}°C</div>
+                <div class="weather-desc">${data.weather[0].description}</div>
+                <div class="weather-location">
+                    <i class="fas fa-map-marker-alt"></i>
+                    <span>${data.name}, ${data.sys.country}</span>
+                </div>
+            `;
+        }
+        
+        // Обновляем информацию о погоде
+        document.getElementById('info-temp').textContent = `${Math.round(data.main.temp)}°C`;
+        document.getElementById('info-humidity').textContent = `${data.main.humidity}%`;
+        document.getElementById('info-wind').textContent = `${data.wind.speed} м/с`;
+        document.getElementById('info-pressure').textContent = `${data.main.pressure} hPa`;
+        
+        // Сохраняем данные
+        state.weather = {
+            temp: data.main.temp,
+            description: data.weather[0].description,
+            humidity: data.main.humidity,
+            windSpeed: data.wind.speed,
+            pressure: data.main.pressure
+        };
+        
+        // Обновляем текущую погоду
+        this.updateCurrentWeather(data);
+    },
+    
+    updateCurrentWeather(data) {
+        const currentWeather = document.getElementById('current-weather');
+        if (currentWeather) {
+            const weatherIcon = this.getWeatherIcon(data.weather[0].icon);
+            currentWeather.innerHTML = `
+                <div class="weather-main">
+                    <div class="weather-icon-large">${weatherIcon}</div>
+                    <div class="weather-info-main">
+                        <div class="weather-temp-large">${Math.round(data.main.temp)}°C</div>
+                        <div class="weather-desc-large">${data.weather[0].description}</div>
+                    </div>
+                </div>
+                <div class="weather-details">
+                    <div class="weather-detail">
+                        <i class="fas fa-temperature-low"></i>
+                        Ощущается как: ${Math.round(data.main.feels_like)}°C
+                    </div>
+                    <div class="weather-detail">
+                        <i class="fas fa-wind"></i>
+                        Ветер: ${data.wind.speed} м/с
+                    </div>
+                    <div class="weather-detail">
+                        <i class="fas fa-tint"></i>
+                        Влажность: ${data.main.humidity}%
+                    </div>
+                    <div class="weather-detail">
+                        <i class="fas fa-eye"></i>
+                        Видимость: ${(data.visibility / 1000).toFixed(1)} км
+                    </div>
+                </div>
+            `;
+        }
+    },
+    
+    getWeatherIcon(iconCode) {
+        const iconMap = {
+            '01d': 'fas fa-sun',
+            '01n': 'fas fa-moon',
+            '02d': 'fas fa-cloud-sun',
+            '02n': 'fas fa-cloud-moon',
+            '03d': 'fas fa-cloud',
+            '03n': 'fas fa-cloud',
+            '04d': 'fas fa-cloud',
+            '04n': 'fas fa-cloud',
+            '09d': 'fas fa-cloud-rain',
+            '09n': 'fas fa-cloud-rain',
+            '10d': 'fas fa-cloud-sun-rain',
+            '10n': 'fas fa-cloud-moon-rain',
+            '11d': 'fas fa-bolt',
+            '11n': 'fas fa-bolt',
+            '13d': 'fas fa-snowflake',
+            '13n': 'fas fa-snowflake',
+            '50d': 'fas fa-smog',
+            '50n': 'fas fa-smog'
+        };
+        
+        const iconClass = iconMap[iconCode] || 'fas fa-cloud';
+        return `<i class="${iconClass}"></i>`;
+    },
+    
+    showWeatherError() {
+        const weatherWidget = document.getElementById('weather-widget');
+        if (weatherWidget) {
+            weatherWidget.innerHTML = `
+                <div class="weather-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Ошибка загрузки</span>
+                </div>
+            `;
+        }
+        
+        const currentWeather = document.getElementById('current-weather');
+        if (currentWeather) {
+            currentWeather.innerHTML = `
+                <div class="weather-error">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Не удалось загрузить данные о погоде</span>
+                </div>
+            `;
+        }
+    },
+    
+    searchWeather(city) {
+        if (!city.trim()) {
+            showNotification('Введите название города', 'warning');
+            return;
+        }
+        this.getWeatherByCity(city);
+        VoiceManager.speak(`Поиск погоды для города ${city}`);
+    }
+};
+
+// Модуль заметок
+const NotesManager = {
+    init() {
+        this.loadNotes();
+        this.updateNotesStats();
+    },
+    
+    loadNotes() {
+        const container = document.getElementById('notes-container');
+        if (!container) return;
+        
+        if (state.notes.length === 0) {
+            container.innerHTML = `
+                <div class="notes-empty">
+                    <i class="fas fa-sticky-note"></i>
+                    <p>У вас пока нет заметок</p>
+                </div>
+            `;
+            return;
+        }
+        
+        container.innerHTML = '';
+        state.notes.forEach((note, index) => {
+            const noteElement = document.createElement('div');
+            noteElement.className = 'note-item';
+            noteElement.innerHTML = `
+                <div class="note-header">
+                    <div class="note-title">${note.title}</div>
+                    <div class="note-date">${new Date(note.date).toLocaleDateString()}</div>
+                </div>
+                <div class="note-content">${note.content}</div>
+                <div class="note-actions">
+                    <button class="btn small danger" onclick="NotesManager.deleteNote(${index})">
+                        <i class="fas fa-trash"></i> Удалить
+                    </button>
+                </div>
+            `;
+            container.appendChild(noteElement);
+        });
+    },
+    
+    addNote(title, content) {
+        if (!title.trim() || !content.trim()) {
+            showNotification('Заполните заголовок и содержание заметки', 'warning');
+            return;
+        }
+        
+        const newNote = {
+            title: title.trim(),
+            content: content.trim(),
+            date: new Date().toISOString()
+        };
+        
+        state.notes.unshift(newNote);
+        localStorage.setItem('skelin-notes', JSON.stringify(state.notes));
+        this.loadNotes();
+        this.updateNotesStats();
+        
+        showNotification('Заметка добавлена', 'success');
+        VoiceManager.speak('Заметка успешно добавлена');
+        
+        // Очищаем поля ввода
+        document.getElementById('note-title').value = '';
+        document.getElementById('note-content').value = '';
+    },
+    
+    deleteNote(index) {
+        if (confirm('Вы уверены, что хотите удалить эту заметку?')) {
+            state.notes.splice(index, 1);
+            localStorage.setItem('skelin-notes', JSON.stringify(state.notes));
+            this.loadNotes();
+            this.updateNotesStats();
+            showNotification('Заметка удалена', 'success');
+        }
+    },
+    
+    clearAllNotes() {
+        if (state.notes.length === 0) {
+            showNotification('Нет заметок для удаления', 'info');
+            return;
+        }
+        
+        if (confirm('Вы уверены, что хотите удалить все заметки?')) {
+            state.notes = [];
+            localStorage.setItem('skelin-notes', JSON.stringify(state.notes));
+            this.loadNotes();
+            this.updateNotesStats();
+            showNotification('Все заметки удалены', 'success');
+            VoiceManager.speak('Все заметки удалены');
+        }
+    },
+    
+    updateNotesStats() {
+        document.getElementById('total-notes').textContent = state.notes.length;
+        document.getElementById('last-update').textContent = new Date().toLocaleDateString();
+    },
+    
+    exportNotes() {
+        if (state.notes.length === 0) {
+            showNotification('Нет заметок для экспорта', 'info');
+            return;
+        }
+        
+        const dataStr = JSON.stringify(state.notes, null, 2);
+        const dataUri = 'data:application/json;charset=utf-8,'+ encodeURIComponent(dataStr);
+        
+        const exportFileDefaultName = `skelin-notes-${new Date().toISOString().split('T')[0]}.json`;
+        
+        const linkElement = document.createElement('a');
+        linkElement.setAttribute('href', dataUri);
+        linkElement.setAttribute('download', exportFileDefaultName);
+        linkElement.click();
+        
+        showNotification('Заметки экспортированы', 'success');
+    },
+    
+    importNotes(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            try {
+                const importedNotes = JSON.parse(e.target.result);
+                if (Array.isArray(importedNotes)) {
+                    state.notes = importedNotes;
+                    localStorage.setItem('skelin-notes', JSON.stringify(state.notes));
+                    this.loadNotes();
+                    this.updateNotesStats();
+                    showNotification('Заметки импортированы', 'success');
+                    VoiceManager.speak('Заметки успешно импортированы');
+                } else {
+                    throw new Error('Неверный формат файла');
+                }
+            } catch (error) {
+                showNotification('Ошибка импорта: неверный формат файла', 'error');
+            }
+        };
+        reader.readAsText(file);
+        
+        // Сбрасываем значение input для возможности повторного импорта того же файла
+        event.target.value = '';
+    }
+};
+
 // Модуль аналитики и графиков
 const AnalyticsManager = {
     chart: null,
@@ -371,8 +714,11 @@ const AnalyticsManager = {
     },
     
     createPerformanceChart() {
-        const ctx = document.getElementById('metricsChart').getContext('2d');
-        this.chart = new Chart(ctx, {
+        const ctx = document.getElementById('metricsChart');
+        if (!ctx) return;
+        
+        const chartCtx = ctx.getContext('2d');
+        this.chart = new Chart(chartCtx, {
             type: 'line',
             data: {
                 labels: Array.from({length: 20}, (_, i) => i + 1),
@@ -500,7 +846,7 @@ const EventManager = {
         `;
         
         eventsContainer.appendChild(eventDiv);
-        eventsContainer.scrollTop = events.scrollHeight;
+        eventsContainer.scrollTop = eventsContainer.scrollHeight;
         
         // Ограничение количества событий
         if (eventsContainer.children.length > 8) {
@@ -533,8 +879,72 @@ function updateSecurityStatus() {
 }
 
 function updateLocation() {
-    document.getElementById('latitude').textContent = state.location.latitude;
-    document.getElementById('longitude').textContent = state.location.longitude;
+    document.getElementById('latitude').textContent = state.location.latitude.toFixed(4);
+    document.getElementById('longitude').textContent = state.location.longitude.toFixed(4);
+}
+
+function updateClock() {
+    const now = new Date();
+    document.getElementById('system-clock').textContent = now.toLocaleTimeString();
+    document.getElementById('system-date').textContent = now.toLocaleDateString('ru-RU', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+    });
+}
+
+function updatePerformanceMetrics() {
+    // Обновление виджета производительности
+    const performance = document.getElementById('performance-metrics');
+    if (performance) {
+        performance.innerHTML = `
+            <div class="performance-metric">
+                <div class="metric-value">${Math.floor(Math.random() * 1000) + 15000}</div>
+                <div class="metric-label">Операций в секунду</div>
+            </div>
+            <div class="performance-metric">
+                <div class="metric-value">${(Math.random() * 0.5 + 99.5).toFixed(1)}%</div>
+                <div class="metric-label">Доступность</div>
+            </div>
+            <div class="performance-metric">
+                <div class="metric-value">${Math.floor(Math.random() * 50) + 50}ms</div>
+                <div class="metric-label">Задержка</div>
+            </div>
+        `;
+    }
+}
+
+function showNotification(message, type = 'info') {
+    const notifications = document.getElementById('system-notifications');
+    if (!notifications) return;
+    
+    const notification = document.createElement('div');
+    notification.className = `system-notification ${type}`;
+    notification.innerHTML = `
+        <div class="notification-content">
+            <i class="fas fa-${getNotificationIcon(type)}"></i>
+            <span>${message}</span>
+        </div>
+    `;
+    
+    notifications.appendChild(notification);
+    
+    // Автоматическое удаление уведомления через 5 секунд
+    setTimeout(() => {
+        if (notification.parentNode) {
+            notification.parentNode.removeChild(notification);
+        }
+    }, 5000);
+}
+
+function getNotificationIcon(type) {
+    const icons = {
+        'success': 'check-circle',
+        'error': 'exclamation-triangle',
+        'warning': 'exclamation-circle',
+        'info': 'info-circle'
+    };
+    return icons[type] || 'info-circle';
 }
 
 // Инициализация при загрузке
@@ -547,6 +957,8 @@ function initializeApp() {
     VoiceManager.init();
     AnalyticsManager.init();
     EventManager.init();
+    WeatherManager.init();
+    NotesManager.init();
     
     // Загрузка сохраненных настроек
     loadSettings();
@@ -647,6 +1059,53 @@ function setupEventListeners() {
         VoiceManager.speak('Лог событий обновлен.');
     });
 
+    // Обновление погоды
+    document.getElementById('refresh-weather').addEventListener('click', () => {
+        WeatherManager.getCurrentLocation();
+        VoiceManager.speak('Данные о погоде обновлены.');
+    });
+
+    // Поиск погоды
+    document.getElementById('search-weather').addEventListener('click', () => {
+        const city = document.getElementById('city-search').value.trim();
+        if (city) {
+            WeatherManager.searchWeather(city);
+        }
+    });
+
+    document.getElementById('city-search').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            const city = document.getElementById('city-search').value.trim();
+            if (city) {
+                WeatherManager.searchWeather(city);
+            }
+        }
+    });
+
+    // Добавление заметки
+    document.getElementById('add-note').addEventListener('click', () => {
+        const title = document.getElementById('note-title').value;
+        const content = document.getElementById('note-content').value;
+        NotesManager.addNote(title, content);
+    });
+
+    // Управление заметками
+    document.getElementById('export-notes').addEventListener('click', () => {
+        NotesManager.exportNotes();
+    });
+
+    document.getElementById('import-notes').addEventListener('click', () => {
+        document.getElementById('import-file').click();
+    });
+
+    document.getElementById('import-file').addEventListener('change', (e) => {
+        NotesManager.importNotes(e);
+    });
+
+    document.getElementById('clear-notes').addEventListener('click', () => {
+        NotesManager.clearAllNotes();
+    });
+
     // Основные элементы управления
     document.getElementById('send-btn').addEventListener('click', handleSendMessage);
     document.getElementById('text-input').addEventListener('keypress', (e) => {
@@ -689,6 +1148,15 @@ function handleSendMessage() {
 function handleCommand(command) {
     const lowerCommand = command.toLowerCase();
     
+    // Обработка команды погоды с указанием города
+    if (lowerCommand.startsWith('погода в ')) {
+        const city = command.substring(9).trim();
+        if (city) {
+            WeatherManager.searchWeather(city);
+            return;
+        }
+    }
+    
     switch(lowerCommand) {
         case 'статус системы':
             showSystemStatus();
@@ -702,8 +1170,27 @@ function handleCommand(command) {
         case 'нейронный анализ':
             neuralAnalysis();
             break;
+        case 'оптимизировать сети':
+            SystemManager.activateSystem('neural-optimization');
+            break;
+        case 'перезагрузить ядро':
+            restartSystem();
+            break;
         case 'показать карту':
             switchSection('analytics');
+            break;
+        case 'погода':
+            switchSection('weather');
+            break;
+        case 'заметки':
+            switchSection('notes');
+            break;
+        case 'новая заметка':
+            switchSection('notes');
+            setTimeout(() => document.getElementById('note-title').focus(), 100);
+            break;
+        case 'удалить заметки':
+            NotesManager.clearAllNotes();
             break;
         case 'обучение':
             SystemManager.activateSystem('deep-learning');
@@ -714,6 +1201,12 @@ function handleCommand(command) {
         case 'анализ данных':
             SystemManager.activateSystem('pattern-recognition');
             break;
+        case 'распознавание образов':
+            SystemManager.activateSystem('pattern-recognition');
+            break;
+        case 'глубокое обучение':
+            SystemManager.activateSystem('deep-learning');
+            break;
         case 'ключ доступа':
             switchSection('security');
             break;
@@ -723,11 +1216,29 @@ function handleCommand(command) {
         case 'сканирование':
             startScan();
             break;
-        case 'команды':
-            showCommands();
+        case 'повысить безопасность':
+            activateSecurity();
+            break;
+        case 'проверить угрозы':
+            startScan();
+            break;
+        case 'главная':
+            switchSection('main');
+            break;
+        case 'аналитика':
+            switchSection('analytics');
+            break;
+        case 'системы':
+            switchSection('systems');
+            break;
+        case 'безопасность':
+            switchSection('security');
             break;
         case 'настройки':
             switchSection('settings');
+            break;
+        case 'команды':
+            showCommands();
             break;
         default:
             handleUnknownCommand(command);
@@ -780,6 +1291,21 @@ function startScan() {
     }, 2000);
 }
 
+function restartSystem() {
+    addMessage('Перезагрузка системного ядра...', 'skelin');
+    VoiceManager.speak('Перезагружаю системное ядро.');
+    
+    setTimeout(() => {
+        state.metrics.efficiency = 95;
+        state.metrics.stability = 2.1;
+        state.activeSystems.clear();
+        updateMetrics();
+        
+        addMessage('Системное ядро перезагружено. Все системы работают стабильно.', 'skelin');
+        VoiceManager.speak('Перезагрузка завершена. Система работает стабильно.');
+    }, 3000);
+}
+
 function showCommands() {
     const commands = `
         ДОСТУПНЫЕ КОМАНДЫ:
@@ -787,12 +1313,28 @@ function showCommands() {
         • активировать защиту - безопасность
         • показать системы - список модулей
         • нейронный анализ - анализ данных
+        • оптимизировать сети - улучшить производительность
+        • перезагрузить ядро - перезапуск системы
         • показать карту - карта активности
+        • погода - текущая погода
+        • погода в [город] - погода в указанном городе
+        • заметки - просмотр заметок
+        • новая заметка - создать заметку
+        • удалить заметки - очистить все заметки
         • обучение - глубокое обучение
         • оптимизация - оптимизация сетей
+        • анализ данных - обработка информации
+        • распознавание образов - анализ паттернов
+        • глубокое обучение - активация ИИ
         • ключ доступа - аутентификация
         • мониторинг - статус защиты
         • сканирование - проверка системы
+        • повысить безопасность - усилить защиту
+        • проверить угрозы - анализ рисков
+        • главная - перейти на главную
+        • аналитика - показать аналитику
+        • системы - управление системами
+        • безопасность - настройки безопасности
         • настройки - параметры системы
     `;
     addMessage(commands, 'skelin');
@@ -824,37 +1366,6 @@ function addMessage(text, sender) {
     
     chat.appendChild(messageDiv);
     chat.scrollTop = chat.scrollHeight;
-}
-
-function updateClock() {
-    const now = new Date();
-    document.getElementById('system-clock').textContent = now.toLocaleTimeString();
-    document.getElementById('system-date').textContent = now.toLocaleDateString('ru-RU', {
-        day: 'numeric',
-        month: 'long',
-        year: 'numeric'
-    });
-}
-
-function updatePerformanceMetrics() {
-    // Обновление виджета производительности
-    const performance = document.getElementById('performance-metrics');
-    if (performance) {
-        performance.innerHTML = `
-            <div class="performance-metric">
-                <div class="metric-value">${Math.floor(Math.random() * 1000) + 15000}</div>
-                <div class="metric-label">Операций в секунду</div>
-            </div>
-            <div class="performance-metric">
-                <div class="metric-value">${(Math.random() * 0.5 + 99.5).toFixed(1)}%</div>
-                <div class="metric-label">Доступность</div>
-            </div>
-            <div class="performance-metric">
-                <div class="metric-value">${Math.floor(Math.random() * 50) + 50}ms</div>
-                <div class="metric-label">Задержка</div>
-            </div>
-        `;
-    }
 }
 
 function loadSettings() {
@@ -906,3 +1417,4 @@ function startVoiceRecognition() {
 
 // Глобальные функции
 window.startVoiceRecognition = startVoiceRecognition;
+window.NotesManager = NotesManager;

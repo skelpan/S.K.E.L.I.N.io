@@ -10,16 +10,90 @@
     
     --dark-bg: #0a0a0a;
     --darker-bg: #050505;
-    --card-bg: rgba(255, 0, 60, 0.05);
-    --card-border: rgba(255, 0, 60, 0.3);
-    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.1);
+    --card-bg: rgba(255, 0, 60, 0.08);
+    --card-border: rgba(255, 0, 60, 0.4);
+    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.15);
     
     --text: #ffffff;
     --text-dim: #a0a0a0;
     --text-bright: #ffffff;
     
     --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
-    --quantum-glow: 0 0 15px var(--primary), 0 0 30px var(--primary), 0 0 60px var(--primary);
+    --system-glow: 0 0 15px var(--primary), 0 0 30px var(--primary), 0 0 60px var(--primary);
+}
+
+/* Тема: Системный красный (по умолчанию) */
+[data-theme="system-red"] {
+    --primary: #ff003c;
+    --primary-dark: #cc002f;
+    --primary-light: #ff3366;
+    --secondary: #00ff88;
+    --accent: #ff6600;
+    --card-bg: rgba(255, 0, 60, 0.08);
+    --card-border: rgba(255, 0, 60, 0.4);
+    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.15);
+}
+
+/* Тема: Нейронная матрица */
+[data-theme="neural-matrix"] {
+    --primary: #00ff88;
+    --primary-dark: #00cc6c;
+    --primary-light: #33ff99;
+    --secondary: #ff003c;
+    --accent: #0033ff;
+    --card-bg: rgba(0, 255, 136, 0.08);
+    --card-border: rgba(0, 255, 136, 0.4);
+    --card-shadow: 0 8px 32px rgba(0, 255, 136, 0.15);
+}
+
+/* Тема: Кибер-фиолетовый */
+[data-theme="cyber-purple"] {
+    --primary: #8a2be2;
+    --primary-dark: #7b1fa2;
+    --primary-light: #9c4dff;
+    --secondary: #00ffff;
+    --accent: #ff00ff;
+    --card-bg: rgba(138, 43, 226, 0.08);
+    --card-border: rgba(138, 43, 226, 0.4);
+    --card-shadow: 0 8px 32px rgba(138, 43, 226, 0.15);
+}
+
+/* Тема: Темная пустота */
+[data-theme="dark-void"] {
+    --primary: #ff003c;
+    --primary-dark: #cc002f;
+    --primary-light: #ff3366;
+    --secondary: #00ffff;
+    --accent: #ff00ff;
+    --dark-bg: #000000;
+    --darker-bg: #000000;
+    --card-bg: rgba(255, 0, 60, 0.08);
+    --card-border: rgba(255, 0, 60, 0.4);
+    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.15);
+}
+
+/* Тема: Квантовый синий */
+[data-theme="quantum-blue"] {
+    --primary: #0066ff;
+    --primary-dark: #0052cc;
+    --primary-light: #3385ff;
+    --secondary: #00ffff;
+    --accent: #ff6600;
+    --card-bg: rgba(0, 102, 255, 0.08);
+    --card-border: rgba(0, 102, 255, 0.4);
+    --card-shadow: 0 8px 32px rgba(0, 102, 255, 0.15);
+}
+
+/* Тема: Неоновый зеленый */
+[data-theme="neon-green"] {
+    --primary: #00ff00;
+    --primary-dark: #00cc00;
+    --primary-light: #33ff33;
+    --secondary: #ff00ff;
+    --accent: #ffff00;
+    --card-bg: rgba(0, 255, 0, 0.08);
+    --card-border: rgba(0, 255, 0, 0.4);
+    --card-shadow: 0 8px 32px rgba(0, 255, 0, 0.15);
 }
 
 * {
@@ -36,8 +110,9 @@ body {
     overflow-x: hidden;
     background-image: 
         radial-gradient(circle at 20% 30%, rgba(255, 0, 60, 0.1) 0%, transparent 40%),
-        radial-gradient(circle at 80% 70%, rgba(255, 0, 60, 0.1) 0%, transparent 40%),
+        radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.1) 0%, transparent 40%),
         linear-gradient(135deg, var(--darker-bg) 0%, var(--dark-bg) 100%);
+    transition: background 0.5s ease, color 0.5s ease;
 }
 
 /* Анимированный фон */
@@ -77,6 +152,7 @@ body {
     background: var(--primary);
     box-shadow: var(--neon-glow);
     z-index: -1;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
 }
 
 .neon-line.horizontal {
@@ -105,6 +181,7 @@ body {
     position: sticky;
     top: 0;
     z-index: 1000;
+    transition: border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .nav-container {
@@ -124,8 +201,9 @@ body {
     font-size: 1.4rem;
     font-weight: bold;
     color: var(--primary);
-    text-shadow: var(--quantum-glow);
+    text-shadow: var(--system-glow);
     position: relative;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .logo-pulse {
@@ -134,11 +212,12 @@ body {
     height: 8px;
     background: var(--primary);
     border-radius: 50%;
-    animation: quantumPulse 2s infinite;
+    animation: systemPulse 2s infinite;
     left: -15px;
+    transition: background 0.5s ease;
 }
 
-@keyframes quantumPulse {
+@keyframes systemPulse {
     0%, 100% { opacity: 1; transform: scale(1); }
     50% { opacity: 0.5; transform: scale(1.2); }
 }
@@ -183,6 +262,7 @@ body {
     font-size: 0.9rem;
     font-weight: bold;
     position: relative;
+    transition: color 0.5s ease;
 }
 
 .status-pulse {
@@ -191,6 +271,7 @@ body {
     background: var(--primary);
     border-radius: 50%;
     animation: statusPulse 1s infinite;
+    transition: background 0.5s ease;
 }
 
 @keyframes statusPulse {
@@ -218,8 +299,8 @@ body {
     min-height: 100vh;
 }
 
-/* Квантовые панели */
-.quantum-panel {
+/* Системные панели */
+.system-panel {
     background: var(--card-bg);
     backdrop-filter: blur(15px);
     border-radius: 15px;
@@ -227,9 +308,10 @@ body {
     box-shadow: var(--card-shadow);
     position: relative;
     overflow: hidden;
+    transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-.quantum-panel::before {
+.system-panel::before {
     content: '';
     position: absolute;
     top: 0;
@@ -237,6 +319,7 @@ body {
     right: 0;
     height: 1px;
     background: linear-gradient(90deg, transparent, var(--primary), transparent);
+    transition: background 0.5s ease;
 }
 
 /* Главная панель */
@@ -256,6 +339,7 @@ body {
     border-radius: 15px;
     border: 1px solid var(--card-border);
     box-shadow: var(--card-shadow);
+    transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
 .logo {
@@ -276,10 +360,11 @@ body {
     border: 2px solid var(--primary);
     color: var(--primary);
     font-size: 1.8rem;
-    box-shadow: var(--quantum-glow);
+    box-shadow: var(--system-glow);
+    transition: background 0.5s ease, border-color 0.5s ease, color 0.5s ease, box-shadow 0.5s ease;
 }
 
-.quantum-orb {
+.system-orb {
     position: absolute;
     top: 50%;
     left: 50%;
@@ -288,10 +373,11 @@ body {
     background: var(--primary);
     border-radius: 50%;
     transform: translate(-50%, -50%);
-    animation: quantumSpin 3s linear infinite;
+    animation: systemSpin 3s linear infinite;
+    transition: background 0.5s ease;
 }
 
-@keyframes quantumSpin {
+@keyframes systemSpin {
     0% { transform: translate(-50%, -50%) rotate(0deg) scale(1); }
     50% { transform: translate(-50%, -50%) rotate(180deg) scale(1.2); }
     100% { transform: translate(-50%, -50%) rotate(360deg) scale(1); }
@@ -306,6 +392,7 @@ body {
     border: 2px solid var(--primary);
     border-radius: 50%;
     animation: pulse 2s infinite;
+    transition: border-color 0.5s ease;
 }
 
 @keyframes pulse {
@@ -322,8 +409,9 @@ body {
     font-size: 2rem;
     font-weight: bold;
     color: var(--primary);
-    text-shadow: var(--quantum-glow);
+    text-shadow: var(--system-glow);
     letter-spacing: 2px;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
 .sub-text {
@@ -337,6 +425,7 @@ body {
     font-size: 0.7rem;
     color: var(--accent);
     margin-top: 4px;
+    transition: color 0.5s ease;
 }
 
 .system-status {
@@ -370,7 +459,7 @@ body {
     height: 100%;
     background: var(--primary);
     border-radius: 3px;
-    transition: width 0.5s ease;
+    transition: width 0.5s ease, background 0.5s ease;
     position: relative;
 }
 
@@ -395,6 +484,7 @@ body {
     height: 12px;
     border-radius: 50%;
     position: relative;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
 }
 
 .status-indicator.active {
@@ -408,17 +498,18 @@ body {
     50% { opacity: 0.5; }
 }
 
-/* Квантовый дисплей */
-.quantum-display {
+/* Системный дисплей */
+.system-display {
     flex: 1;
     background: rgba(255, 0, 60, 0.05);
     border-radius: 15px;
     border: 1px solid var(--card-border);
     position: relative;
     overflow: hidden;
+    transition: background 0.5s ease, border-color 0.5s ease;
 }
 
-.quantum-frame {
+.system-frame {
     position: absolute;
     top: 10px;
     left: 10px;
@@ -428,9 +519,10 @@ body {
     border-radius: 10px;
     display: flex;
     flex-direction: column;
+    transition: background 0.5s ease;
 }
 
-.quantum-display::before {
+.system-display::before {
     content: '';
     position: absolute;
     top: 0;
@@ -438,11 +530,12 @@ body {
     right: 0;
     bottom: 0;
     background: linear-gradient(45deg, transparent 30%, rgba(255, 0, 60, 0.1) 50%, transparent 70%);
-    animation: quantumScan 3s linear infinite;
+    animation: systemScan 3s linear infinite;
     pointer-events: none;
+    transition: background 0.5s ease;
 }
 
-@keyframes quantumScan {
+@keyframes systemScan {
     0% { transform: translateY(-100%); }
     100% { transform: translateY(100%); }
 }
@@ -469,6 +562,7 @@ body {
 .chat-container::-webkit-scrollbar-thumb {
     background: var(--primary);
     border-radius: 3px;
+    transition: background 0.5s ease;
 }
 
 .message {
@@ -500,6 +594,7 @@ body {
     background: rgba(255, 0, 60, 0.2);
     border: 1px solid var(--primary);
     color: var(--primary);
+    transition: background 0.5s ease, border-color 0.5s ease, color 0.5s ease;
 }
 
 .user-message .message-avatar {
@@ -508,7 +603,7 @@ body {
     color: var(--accent);
 }
 
-.quantum-pulse {
+.system-pulse {
     position: absolute;
     top: -2px;
     left: -2px;
@@ -516,7 +611,7 @@ body {
     bottom: -2px;
     border: 1px solid currentColor;
     border-radius: 50%;
-    animation: quantumPulse 2s infinite;
+    animation: systemPulse 2s infinite;
 }
 
 .message-content {
@@ -544,13 +639,13 @@ body {
     text-align: right;
 }
 
-/* Визуализатор квантового состояния */
-.quantum-visualizer {
+/* Визуализатор активности */
+.activity-visualizer {
     position: absolute;
     bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
-    display: none;
+    display: flex;
     flex-direction: column;
     align-items: center;
     gap: 10px;
@@ -558,46 +653,45 @@ body {
     padding: 20px;
     border-radius: 10px;
     border: 1px solid var(--primary);
+    transition: border-color 0.5s ease;
 }
 
-.quantum-visualizer.active {
-    display: flex;
-}
-
-.quantum-bars {
+.activity-bars {
     display: flex;
     align-items: end;
     gap: 4px;
     height: 35px;
 }
 
-.q-bit {
+.activity-bar {
     width: 6px;
     background: var(--primary);
     border-radius: 3px;
-    animation: quantumBar 1.5s ease-in-out infinite;
+    animation: activityBar 1.5s ease-in-out infinite;
+    transition: background 0.5s ease;
 }
 
-.q-bit:nth-child(1) { animation-delay: 0.1s; height: 8px; }
-.q-bit:nth-child(2) { animation-delay: 0.2s; height: 15px; }
-.q-bit:nth-child(3) { animation-delay: 0.3s; height: 22px; }
-.q-bit:nth-child(4) { animation-delay: 0.4s; height: 28px; }
-.q-bit:nth-child(5) { animation-delay: 0.5s; height: 22px; }
-.q-bit:nth-child(6) { animation-delay: 0.4s; height: 15px; }
-.q-bit:nth-child(7) { animation-delay: 0.3s; height: 8px; }
-.q-bit:nth-child(8) { animation-delay: 0.2s; height: 15px; }
+.activity-bar:nth-child(1) { animation-delay: 0.1s; height: 8px; }
+.activity-bar:nth-child(2) { animation-delay: 0.2s; height: 15px; }
+.activity-bar:nth-child(3) { animation-delay: 0.3s; height: 22px; }
+.activity-bar:nth-child(4) { animation-delay: 0.4s; height: 28px; }
+.activity-bar:nth-child(5) { animation-delay: 0.5s; height: 22px; }
+.activity-bar:nth-child(6) { animation-delay: 0.4s; height: 15px; }
+.activity-bar:nth-child(7) { animation-delay: 0.3s; height: 8px; }
+.activity-bar:nth-child(8) { animation-delay: 0.2s; height: 15px; }
 
-@keyframes quantumBar {
+@keyframes activityBar {
     0%, 100% { transform: scaleY(1); opacity: 1; }
     50% { transform: scaleY(1.8); opacity: 0.7; }
 }
 
-.quantum-text {
+.activity-text {
     color: var(--primary);
     font-size: 0.9rem;
     font-weight: bold;
     letter-spacing: 1px;
     animation: blink 1s infinite;
+    transition: color 0.5s ease;
 }
 
 @keyframes blink {
@@ -612,6 +706,7 @@ body {
     border-radius: 15px;
     border: 1px solid var(--card-border);
     padding: 20px;
+    transition: background 0.5s ease, border-color 0.5s ease;
 }
 
 .input-group {
@@ -620,12 +715,12 @@ body {
     margin-bottom: 15px;
 }
 
-.quantum-input {
+.system-input {
     flex: 1;
     position: relative;
 }
 
-.quantum-input input {
+.system-input input {
     width: 100%;
     padding: 14px 18px;
     background: rgba(0, 0, 0, 0.3);
@@ -637,7 +732,7 @@ body {
     transition: all 0.3s;
 }
 
-.quantum-input input:focus {
+.system-input input:focus {
     border-color: var(--primary);
     box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
 }
@@ -655,7 +750,7 @@ body {
     pointer-events: none;
 }
 
-.quantum-input input:focus + .input-glow {
+.system-input input:focus + .input-glow {
     opacity: 0.3;
 }
 
@@ -708,7 +803,7 @@ body {
     animation: pulse 1s infinite;
 }
 
-.quantum-actions {
+.system-actions {
     display: flex;
     justify-content: space-between;
     gap: 8px;
@@ -756,6 +851,7 @@ body {
     border-bottom: 1px solid var(--card-border);
     font-weight: bold;
     color: var(--primary);
+    transition: border-color 0.5s ease, color 0.5s ease;
 }
 
 .widget-header i {
@@ -792,38 +888,73 @@ body {
     flex: 1;
 }
 
-/* Виджет квантового времени */
-.quantum-time {
+/* Виджет системного времени */
+.system-time {
     text-align: center;
 }
 
-.quantum-clock {
+.system-clock {
     font-size: 2.2rem;
     font-weight: bold;
     color: var(--primary);
-    text-shadow: var(--quantum-glow);
+    text-shadow: var(--system-glow);
     margin-bottom: 5px;
     font-family: 'Courier New', monospace;
+    transition: color 0.5s ease, text-shadow 0.5s ease;
 }
 
-.quantum-date {
+.system-date {
     font-size: 1rem;
     color: var(--text);
     margin-bottom: 5px;
 }
 
-.time-dilation {
+.time-status {
     font-size: 0.8rem;
     color: var(--text-dim);
     font-family: 'Courier New', monospace;
 }
 
-/* Виджет квантовой среды */
-.quantum-environment {
+/* Виджет погоды */
+.weather-widget {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    transition: border-color 0.5s ease;
+}
+
+.weather-icon {
+    font-size: 2.5rem;
+    color: var(--primary);
+    transition: color 0.5s ease;
+}
+
+.weather-temp {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+.weather-desc {
+    font-size: 0.9rem;
+    color: var(--text-dim);
     text-align: center;
 }
 
-.quantum-loading {
+.weather-location {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.weather-loading {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -831,13 +962,49 @@ body {
     color: var(--text-dim);
 }
 
-.quantum-spinner {
+/* Виджет производительности */
+.performance-metrics {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.performance-metric {
+    text-align: center;
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.metric-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-bottom: 5px;
+    transition: color 0.5s ease;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.performance-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dim);
+}
+
+.system-spinner {
     width: 30px;
     height: 30px;
     border: 3px solid rgba(255, 0, 60, 0.3);
     border-top: 3px solid var(--primary);
     border-radius: 50%;
     animation: spin 1s linear infinite;
+    transition: border-color 0.5s ease;
 }
 
 @keyframes spin {
@@ -886,7 +1053,7 @@ body {
     height: 100%;
     background: var(--primary);
     border-radius: 3px;
-    transition: width 0.5s ease;
+    transition: width 0.5s ease, background 0.5s ease;
     position: relative;
 }
 
@@ -901,8 +1068,22 @@ body {
     animation: shine 2s infinite;
 }
 
-/* Квантовые события */
-.quantum-events {
+.metric-indicator {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    position: relative;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.metric-indicator.active {
+    background: var(--primary);
+    box-shadow: 0 0 10px var(--primary);
+    animation: indicatorPulse 2s infinite;
+}
+
+/* Системные события */
+.system-events {
     display: flex;
     flex-direction: column;
     gap: 12px;
@@ -910,7 +1091,7 @@ body {
     overflow-y: auto;
 }
 
-.event-item {
+.system-event {
     padding: 10px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 6px;
@@ -918,9 +1099,25 @@ body {
     transition: all 0.3s;
 }
 
-.event-item:hover {
+.system-event:hover {
     background: rgba(255, 0, 60, 0.1);
     transform: translateX(3px);
+}
+
+.event-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    background: rgba(255, 0, 60, 0.2);
+    border-radius: 50%;
+    margin-bottom: 8px;
+    transition: background 0.5s ease;
+}
+
+.event-content {
+    flex: 1;
 }
 
 .event-title {
@@ -929,14 +1126,26 @@ body {
     line-height: 1.3;
 }
 
-.event-meta {
-    display: flex;
-    justify-content: space-between;
+.event-source {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+    margin-bottom: 3px;
+}
+
+.event-time {
     font-size: 0.7rem;
     color: var(--text-dim);
 }
 
-/* Системы квантового управления */
+.system-loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-dim);
+}
+
+/* Системы управления */
 .systems-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -951,12 +1160,18 @@ body {
     border: 1px solid var(--card-border);
     padding: 25px;
     text-align: center;
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.system-card.wide {
+    grid-column: 1 / -1;
 }
 
 .system-icon {
     font-size: 3rem;
     color: var(--primary);
     margin-bottom: 15px;
+    transition: color 0.5s ease;
 }
 
 .system-card h3 {
@@ -991,62 +1206,87 @@ body {
     transform: translateY(-2px);
 }
 
-/* Квантовая аналитика */
-.quantum-dashboard {
+.system-status-panel {
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+    padding: 20px;
+    border: 1px solid var(--card-border);
+    min-height: 100px;
+    transition: border-color 0.5s ease;
+}
+
+.status-message {
+    color: var(--text);
+    font-size: 1rem;
+    text-align: center;
+}
+
+.system-active {
+    color: var(--success);
+    font-weight: bold;
+}
+
+.system-processing {
+    color: var(--warning);
+    font-weight: bold;
+}
+
+/* Аналитика */
+.analytics-dashboard {
     display: grid;
     grid-template-columns: 2fr 1fr;
     gap: 20px;
     width: 100%;
 }
 
-.quantum-card {
+.analytics-card {
     background: var(--card-bg);
     backdrop-filter: blur(15px);
     border-radius: 15px;
     border: 1px solid var(--card-border);
     padding: 25px;
+    transition: background 0.5s ease, border-color 0.5s ease;
 }
 
-.quantum-card.wide {
+.analytics-card.wide {
     grid-column: 1 / -1;
 }
 
-.quantum-card h3 {
+.analytics-card h3 {
     color: var(--primary);
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: color 0.5s ease;
 }
 
-.quantum-chart {
+.analytics-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.analytics-chart {
     height: 200px;
     background: rgba(0, 0, 0, 0.2);
     border-radius: 10px;
     margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: var(--text-dim);
 }
 
-.chart-placeholder {
-    text-align: center;
+.chart-container {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
 }
 
-.chart-placeholder i {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    display: block;
-}
-
-.quantum-stats {
+.analytics-stats {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 15px;
 }
 
-.quantum-stat {
+.analytics-stat {
     text-align: center;
     padding: 15px;
     background: rgba(0, 0, 0, 0.2);
@@ -1058,6 +1298,7 @@ body {
     font-weight: bold;
     color: var(--primary);
     margin-bottom: 5px;
+    transition: color 0.5s ease;
 }
 
 .stat-label {
@@ -1065,27 +1306,89 @@ body {
     color: var(--text-dim);
 }
 
-.quantum-map {
+/* Карта активности */
+.activity-map {
     height: 300px;
-    background: rgba(0, 0, 0, 0.2);
+    background: rgba(0, 0, 0, 0.3);
     border-radius: 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    border: 1px solid var(--card-border);
+    position: relative;
+    overflow: hidden;
+    transition: border-color 0.5s ease;
 }
 
-.map-placeholder {
-    text-align: center;
-    color: var(--text-dim);
+.map-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
 }
 
-.map-placeholder i {
-    font-size: 3rem;
-    margin-bottom: 10px;
-    display: block;
+.map-coordinates {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: rgba(0, 0, 0, 0.8);
+    padding: 10px 15px;
+    border-radius: 6px;
+    border: 1px solid var(--primary);
+    color: var(--text);
+    z-index: 2;
+    transition: border-color 0.5s ease;
 }
 
-/* Квантовая защита */
+.coordinate {
+    font-size: 0.8rem;
+    margin-bottom: 5px;
+}
+
+.location {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--primary);
+    margin-top: 5px;
+    transition: color 0.5s ease;
+}
+
+.map-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: 
+        radial-gradient(circle at 20% 30%, rgba(255, 0, 60, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
+    transition: background-image 0.5s ease;
+}
+
+.active-nodes {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.node {
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    background: var(--primary);
+    border-radius: 50%;
+    box-shadow: 0 0 10px var(--primary);
+    animation: nodePulse 2s infinite;
+    transition: background 0.5s ease, box-shadow 0.5s ease;
+}
+
+.node:nth-child(1) { animation-delay: 0s; }
+.node:nth-child(2) { animation-delay: 0.7s; }
+.node:nth-child(3) { animation-delay: 1.4s; }
+
+@keyframes nodePulse {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+/* Безопасность */
 .security-dashboard {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -1099,6 +1402,7 @@ body {
     border-radius: 15px;
     border: 1px solid var(--card-border);
     padding: 25px;
+    transition: background 0.5s ease, border-color 0.5s ease;
 }
 
 .security-card h3 {
@@ -1107,6 +1411,7 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+    transition: color 0.5s ease;
 }
 
 .security-status {
@@ -1141,152 +1446,56 @@ body {
     color: var(--success);
 }
 
-.security-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 15px;
+.security-controls {
+    margin-top: 20px;
 }
 
-.security-system {
-    aspect-ratio: 16/9;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 8px;
-    border: 1px solid var(--card-border);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.system-placeholder {
-    text-align: center;
-    color: var(--text-dim);
-}
-
-.system-placeholder i {
-    font-size: 2rem;
-    margin-bottom: 5px;
-    display: block;
-}
-
-/* Квантовые настройки */
-.settings-panel {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    width: 100%;
-}
-
-.settings-section {
-    background: var(--card-bg);
-    backdrop-filter: blur(15px);
-    border-radius: 15px;
-    border: 1px solid var(--card-border);
-    padding: 25px;
-}
-
-.settings-section h3 {
-    color: var(--primary);
-    margin-bottom: 20px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-}
-
-.quantum-themes {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
-    gap: 15px;
-}
-
-.theme-option {
-    background: none;
-    border: 1px solid var(--card-border);
-    border-radius: 8px;
-    padding: 15px;
-    cursor: pointer;
-    transition: all 0.3s;
-    text-align: center;
-}
-
-.theme-option.active {
-    border-color: var(--primary);
-    box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
-}
-
-.theme-preview {
-    width: 100%;
-    height: 40px;
-    border-radius: 4px;
-    margin-bottom: 8px;
-}
-
-.theme-preview.quantum-red {
-    background: linear-gradient(135deg, #ff003c, #ff6600);
-}
-
-.theme-preview.neural-matrix {
-    background: linear-gradient(135deg, #00ff88, #0033ff);
-}
-
-.theme-preview.quantum-void {
-    background: linear-gradient(135deg, #000000, #ff003c);
-}
-
-/* Квантовый голос */
-.quantum-voice {
+.access-input-group {
     display: flex;
     flex-direction: column;
     gap: 15px;
+    margin: 20px 0;
 }
 
-.voice-param {
+.access-input {
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 5px;
 }
 
-.voice-param input[type="range"] {
-    width: 100%;
-    height: 6px;
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 3px;
-    outline: none;
-    -webkit-appearance: none;
-}
-
-.voice-param input[type="range"]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    width: 18px;
-    height: 18px;
-    background: var(--primary);
-    border-radius: 50%;
-    cursor: pointer;
-}
-
-.voice-param label {
+.access-input label {
     font-size: 0.9rem;
-    color: var(--text);
-    display: flex;
-    justify-content: space-between;
+    color: var(--text-dim);
+    font-weight: bold;
 }
 
-.voice-presets {
-    display: flex;
-    gap: 8px;
-    justify-content: space-between;
+.security-input {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.security-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
 }
 
 .btn {
-    padding: 8px 16px;
+    padding: 10px 18px;
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     font-weight: bold;
     transition: all 0.3s;
     display: flex;
     align-items: center;
-    gap: 5px;
+    gap: 8px;
 }
 
 .btn.primary {
@@ -1309,13 +1518,541 @@ body {
     background: rgba(255, 255, 255, 0.2);
 }
 
-.btn.small {
-    padding: 6px 12px;
-    font-size: 0.7rem;
+.btn.danger {
+    background: rgba(255, 0, 34, 0.2);
+    color: var(--danger);
+    border: 1px solid var(--danger);
 }
 
-/* Квантовые команды */
-.quantum-commands {
+.btn.danger:hover {
+    background: rgba(255, 0, 34, 0.3);
+}
+
+.btn.small {
+    padding: 6px 12px;
+    font-size: 0.8rem;
+}
+
+.access-level {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 6px;
+    margin: 10px 0;
+    font-weight: bold;
+}
+
+.security-result {
+    padding: 10px;
+    border-radius: 6px;
+    text-align: center;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.security-result.success {
+    background: rgba(0, 255, 102, 0.1);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.security-result.error {
+    background: rgba(255, 0, 34, 0.1);
+    color: var(--danger);
+    border: 1px solid var(--danger);
+}
+
+.security-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.security-system {
+    aspect-ratio: 16/9;
+}
+
+.system-status-card {
+    text-align: center;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    border: 1px solid var(--card-border);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: border-color 0.5s ease;
+}
+
+.system-status-card i {
+    font-size: 2rem;
+    color: var(--primary);
+    margin-bottom: 10px;
+    transition: color 0.5s ease;
+}
+
+.system-status-card h4 {
+    margin: 10px 0;
+    color: var(--text);
+}
+
+.system-status {
+    padding: 5px 10px;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.system-status.active {
+    background: rgba(0, 255, 102, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+
+.system-status:not(.active) {
+    background: rgba(255, 170, 0, 0.2);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+/* Погода */
+.weather-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.weather-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid var(--card-border);
+    padding: 25px;
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.weather-card.wide {
+    grid-column: 1 / -1;
+}
+
+.weather-card h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.5s ease;
+}
+
+.current-weather {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    padding: 20px;
+    background: rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.weather-search {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.search-input-group {
+    display: flex;
+    gap: 10px;
+}
+
+.weather-input {
+    flex: 1;
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.weather-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+}
+
+.search-results {
+    min-height: 100px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid var(--card-border);
+}
+
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.info-item {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 12px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+}
+
+.info-item i {
+    font-size: 1.5rem;
+    color: var(--primary);
+    transition: color 0.5s ease;
+}
+
+.info-content {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label {
+    font-size: 0.8rem;
+    color: var(--text-dim);
+}
+
+.info-value {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* Заметки */
+.notes-dashboard {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 20px;
+    width: 100%;
+}
+
+.notes-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid var(--card-border);
+    padding: 25px;
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.notes-card.wide {
+    grid-column: 1 / -1;
+}
+
+.notes-card h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.5s ease;
+}
+
+.notes-controls {
+    margin-bottom: 20px;
+}
+
+.notes-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.notes-input {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+}
+
+.notes-input:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+}
+
+.notes-textarea {
+    padding: 12px 15px;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--card-border);
+    border-radius: 6px;
+    color: var(--text);
+    font-size: 0.9rem;
+    outline: none;
+    transition: all 0.3s;
+    min-height: 100px;
+    resize: vertical;
+    font-family: inherit;
+}
+
+.notes-textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
+}
+
+.notes-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.notes-empty {
+    text-align: center;
+    padding: 40px 20px;
+    color: var(--text-dim);
+}
+
+.notes-empty i {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    display: block;
+    color: var(--primary);
+    transition: color 0.5s ease;
+}
+
+.note-item {
+    padding: 15px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary);
+    transition: all 0.3s;
+}
+
+.note-item:hover {
+    background: rgba(255, 0, 60, 0.1);
+    transform: translateX(3px);
+}
+
+.note-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.note-title {
+    font-weight: bold;
+    color: var(--text);
+    font-size: 1.1rem;
+}
+
+.note-date {
+    font-size: 0.7rem;
+    color: var(--text-dim);
+}
+
+.note-content {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+}
+
+.notes-management {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.notes-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.stat-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    color: var(--text-dim);
+}
+
+.stat-value {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: var(--text);
+}
+
+/* Настройки */
+.settings-panel {
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    width: 100%;
+}
+
+.settings-section {
+    background: var(--card-bg);
+    backdrop-filter: blur(15px);
+    border-radius: 15px;
+    border: 1px solid var(--card-border);
+    padding: 25px;
+    transition: background 0.5s ease, border-color 0.5s ease;
+}
+
+.settings-section h3 {
+    color: var(--primary);
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: color 0.5s ease;
+}
+
+.system-themes {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+    gap: 15px;
+}
+
+.theme-option {
+    background: none;
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    padding: 15px;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-align: center;
+}
+
+.theme-option:hover {
+    border-color: var(--primary);
+    transform: translateY(-2px);
+}
+
+.theme-option.active {
+    border-color: var(--primary);
+    box-shadow: 0 0 15px rgba(255, 0, 60, 0.3);
+    background: rgba(255, 0, 60, 0.1);
+}
+
+.theme-preview {
+    width: 100%;
+    height: 40px;
+    border-radius: 4px;
+    margin-bottom: 8px;
+}
+
+.theme-preview.system-red {
+    background: linear-gradient(135deg, #ff003c, #ff6600);
+}
+
+.theme-preview.neural-matrix {
+    background: linear-gradient(135deg, #00ff88, #0033ff);
+}
+
+.theme-preview.cyber-purple {
+    background: linear-gradient(135deg, #8a2be2, #00ffff);
+}
+
+.theme-preview.dark-void {
+    background: linear-gradient(135deg, #000000, #ff003c);
+}
+
+.theme-preview.quantum-blue {
+    background: linear-gradient(135deg, #0066ff, #00ffff);
+}
+
+.theme-preview.neon-green {
+    background: linear-gradient(135deg, #00ff00, #ffff00);
+}
+
+/* Голосовые настройки */
+.voice-settings {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.voice-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.voice-param {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.voice-param label {
+    font-size: 0.9rem;
+    color: var(--text);
+    display: flex;
+    justify-content: space-between;
+}
+
+.voice-param input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 3px;
+    outline: none;
+    -webkit-appearance: none;
+}
+
+.voice-param input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 18px;
+    height: 18px;
+    background: var(--primary);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.5s ease;
+}
+
+.voice-presets {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.voice-test {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--card-border);
+}
+
+.voice-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text-dim);
+    font-size: 0.9rem;
+}
+
+.voice-info i {
+    color: var(--primary);
+    transition: color 0.5s ease;
+}
+
+/* Системные команды */
+.system-commands {
     display: flex;
     flex-direction: column;
     gap: 20px;
@@ -1325,6 +2062,7 @@ body {
     color: var(--primary);
     margin-bottom: 10px;
     font-size: 1rem;
+    transition: color 0.5s ease;
 }
 
 .command-item {
@@ -1334,10 +2072,11 @@ body {
     margin-bottom: 5px;
     font-size: 0.9rem;
     border-left: 2px solid var(--primary);
+    transition: border-color 0.5s ease;
 }
 
-/* Квантовые уведомления */
-.quantum-notifications {
+/* Системные уведомления */
+.system-notifications {
     position: fixed;
     top: 90px;
     right: 20px;
@@ -1347,7 +2086,7 @@ body {
     gap: 10px;
 }
 
-.quantum-notification {
+.system-notification {
     padding: 15px 20px;
     background: var(--card-bg);
     backdrop-filter: blur(15px);
@@ -1356,12 +2095,13 @@ body {
     box-shadow: var(--card-shadow);
     color: var(--text);
     max-width: 300px;
-    animation: quantumSlideIn 0.3s ease;
+    animation: systemSlideIn 0.3s ease;
     position: relative;
     overflow: hidden;
+    transition: background 0.5s ease, border-color 0.5s ease, box-shadow 0.5s ease;
 }
 
-.quantum-notification::before {
+.system-notification::before {
     content: '';
     position: absolute;
     top: 0;
@@ -1370,98 +2110,53 @@ body {
     height: 100%;
 }
 
-.quantum-notification.success::before {
+.system-notification.success::before {
     background: var(--success);
 }
 
-.quantum-notification.error::before {
+.system-notification.error::before {
     background: var(--danger);
 }
 
-.quantum-notification.warning::before {
+.system-notification.warning::before {
     background: var(--warning);
 }
 
-.quantum-notification.info::before {
+.system-notification.info::before {
     background: var(--primary);
 }
 
-@keyframes quantumSlideIn {
+@keyframes systemSlideIn {
     from { transform: translateX(100%); opacity: 0; }
     to { transform: translateX(0); opacity: 1; }
 }
 
-/* Адаптивность */
-@media (max-width: 1024px) {
-    .section.active {
-        grid-template-columns: 1fr;
-    }
-    
-    .sidebar {
-        order: -1;
-    }
-    
-    .quantum-dashboard,
-    .security-dashboard {
-        grid-template-columns: 1fr;
-    }
+/* Анимации для систем */
+@keyframes systemActivate {
+    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7); }
+    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 0, 60, 0); }
+    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
 }
 
-@media (max-width: 768px) {
-    .nav-container {
-        flex-direction: column;
-        height: auto;
-        padding: 10px;
-    }
-    
-    .nav-menu {
-        margin: 10px 0;
-        flex-wrap: wrap;
-        justify-content: center;
-    }
-    
-    .section.active {
-        padding: 10px;
-        gap: 15px;
-    }
-    
-    .header {
-        flex-direction: column;
-        gap: 15px;
-        text-align: center;
-    }
-    
-    .system-status {
-        justify-content: center;
-    }
-    
-    .message {
-        max-width: 95%;
-    }
-    
-    .quantum-actions {
-        flex-wrap: wrap;
-    }
-    
-    .action-btn {
-        flex: 0 0 calc(33.333% - 6px);
-    }
-    
-    .systems-grid {
-        grid-template-columns: 1fr;
-    }
-    
-    .quantum-themes {
-        grid-template-columns: 1fr;
-    }
-    
-    .voice-presets {
-        flex-direction: column;
-    }
-    
-    .quantum-stats {
-        grid-template-columns: 1fr;
-    }
+.system-activating {
+    animation: systemActivate 0.6s ease;
+}
+
+@keyframes unlockPulse {
+    0% { background: rgba(255, 0, 60, 0.1); }
+    100% { background: transparent; }
+}
+
+.unlocked-feature {
+    animation: unlockPulse 2s;
+}
+
+.command-response {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 10px;
+    margin-top: 10px;
+    border-left: 3px solid var(--secondary);
 }
 
 /* Подсказки */
@@ -1491,514 +2186,313 @@ body {
     opacity: 1;
 }
 
-/* Тема Neural Matrix */
-[data-theme="neural-matrix"] {
-    --primary: #00ff88;
-    --primary-dark: #00cc6c;
-    --primary-light: #33ff99;
-    --secondary: #ff003c;
-    --accent: #0033ff;
-}
-
-/* Тема Quantum Void */
-[data-theme="quantum-void"] {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ffff;
-    --accent: #ff00ff;
-    --dark-bg: #000000;
-    --darker-bg: #000000;
-}
-.system-card.wide {
-    grid-column: 1 / -1;
-}
-
-.system-status-panel {
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    padding: 20px;
-    border: 1px solid var(--card-border);
-    min-height: 100px;
-}
-
-.status-message {
-    color: var(--text);
-    font-size: 1rem;
-    text-align: center;
-}
-
-.system-active {
-    color: var(--success);
-    font-weight: bold;
-}
-
-.system-processing {
-    color: var(--warning);
-    font-weight: bold;
-}
-
-.security-controls {
-    margin-top: 20px;
-}
-
-.security-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    margin-bottom: 15px;
-}
-
-.security-input {
-    padding: 12px 15px;
-    background: rgba(0, 0, 0, 0.3);
-    border: 1px solid var(--card-border);
-    border-radius: 6px;
-    color: var(--text);
-    font-size: 0.9rem;
-    outline: none;
-    transition: all 0.3s;
-}
-
-.security-input:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 10px rgba(255, 0, 60, 0.3);
-}
-
-.security-result {
-    padding: 10px;
-    border-radius: 6px;
-    text-align: center;
-    font-weight: bold;
-    margin-top: 10px;
-}
-
-.security-result.success {
-    background: rgba(0, 255, 102, 0.1);
-    color: var(--success);
-    border: 1px solid var(--success);
-}
-
-.security-result.error {
-    background: rgba(255, 0, 34, 0.1);
-    color: var(--danger);
-    border: 1px solid var(--danger);
-}
-
-.voice-settings {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
-
-.theme-preview.cyber-purple {
-    background: linear-gradient(135deg, #8a2be2, #00ffff);
-}
-
-/* Анимации для систем */
-@keyframes systemActivate {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.05); }
-    100% { transform: scale(1); }
-}
-
-.system-activating {
-    animation: systemActivate 0.5s ease;
-}
-
-/* Дополнительные стили для улучшенного интерфейса */
-.quantum-stat .stat-label {
-    font-size: 0.8rem;
-    color: var(--text-dim);
-    text-align: center;
-}
-
-.quantum-stat .stat-value {
-    font-size: 1.8rem;
-    font-weight: bold;
-    color: var(--primary);
-    text-align: center;
-    text-shadow: var(--quantum-glow);
-}
-
-/* Адаптивность для новых элементов */
-@media (max-width: 768px) {
-    .security-input-group {
-        flex-direction: column;
+/* Адаптивность */
+@media (max-width: 1024px) {
+    .section.active {
+        grid-template-columns: 1fr;
     }
     
-    .system-status-panel {
-        min-height: 80px;
-        padding: 15px;
+    .sidebar {
+        order: -1;
+    }
+    
+    .analytics-dashboard,
+    .security-dashboard,
+    .weather-dashboard,
+    .notes-dashboard {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+        height: auto;
+        padding: 10px;
+    }
+    
+    .nav-menu {
+        margin: 10px 0;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
+    
+    .nav-btn {
+        padding: 8px 12px;
+        font-size: 0.8rem;
+    }
+    
+    .section.active {
+        padding: 10px;
+        gap: 15px;
+    }
+    
+    .header {
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+    }
+    
+    .system-status {
+        justify-content: center;
+    }
+    
+    .message {
+        max-width: 95%;
+    }
+    
+    .system-actions {
+        flex-wrap: wrap;
+    }
+    
+    .action-btn {
+        flex: 0 0 calc(25% - 6px);
+        margin-bottom: 5px;
+    }
+    
+    .systems-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .system-themes {
+        grid-template-columns: 1fr 1fr;
     }
     
     .voice-presets {
         flex-direction: column;
     }
-}
-:root {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ff88;
-    --accent: #ff6600;
-    --danger: #ff0022;
-    --warning: #ffaa00;
-    --success: #00ff66;
     
-    --dark-bg: #0a0a0a;
-    --darker-bg: #050505;
-    --card-bg: rgba(255, 0, 60, 0.05);
-    --card-border: rgba(255, 0, 60, 0.3);
-    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.1);
+    .analytics-stats {
+        grid-template-columns: 1fr;
+    }
     
-    --text: #ffffff;
-    --text-dim: #a0a0a0;
-    --text-bright: #ffffff;
+    .security-grid {
+        grid-template-columns: 1fr;
+    }
     
-    --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
-    --quantum-glow: 0 0 15px var(--primary), 0 0 30px var(--primary), 0 0 60px var(--primary);
-}
-
-[data-theme="neural-matrix"] {
-    --primary: #00ff88;
-    --primary-dark: #00cc6c;
-    --primary-light: #33ff99;
-    --secondary: #ff003c;
-    --accent: #0033ff;
-    --card-bg: rgba(0, 255, 136, 0.05);
-    --card-border: rgba(0, 255, 136, 0.3);
-}
-
-[data-theme="quantum-void"] {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ffff;
-    --accent: #ff00ff;
-    --dark-bg: #000000;
-    --darker-bg: #000000;
-}
-
-[data-theme="cyber-purple"] {
-    --primary: #8a2be2;
-    --primary-dark: #7b1fa2;
-    --primary-light: #9c4dff;
-    --secondary: #00ffff;
-    --accent: #ff00ff;
-    --card-bg: rgba(138, 43, 226, 0.05);
-    --card-border: rgba(138, 43, 226, 0.3);
-}
-:root {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ff88;
-    --accent: #ff6600;
-    --danger: #ff0022;
-    --warning: #ffaa00;
-    --success: #00ff66;
+    .search-input-group {
+        flex-direction: column;
+    }
     
-    --dark-bg: #0a0a0a;
-    --darker-bg: #050505;
-    --card-bg: rgba(255, 0, 60, 0.05);
-    --card-border: rgba(255, 0, 60, 0.3);
-    --card-shadow: 0 8px 32px rgba(255, 0, 60, 0.1);
+    .input-group {
+        flex-direction: column;
+    }
     
-    --text: #ffffff;
-    --text-dim: #a0a0a0;
-    --text-bright: #ffffff;
+    .control-btn {
+        width: 100%;
+        margin-top: 10px;
+    }
+}
+
+@media (max-width: 480px) {
+    .nav-menu {
+        flex-direction: column;
+        width: 100%;
+    }
     
-    --neon-glow: 0 0 10px currentColor, 0 0 20px currentColor, 0 0 40px currentColor;
-    --system-glow: 0 0 15px var(--primary), 0 0 30px var(--primary), 0 0 60px var(--primary);
+    .nav-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    
+    .system-actions {
+        flex-direction: column;
+    }
+    
+    .action-btn {
+        flex: 1;
+    }
+    
+    .system-themes {
+        grid-template-columns: 1fr;
+    }
+    
+    .voice-test {
+        flex-direction: column;
+        gap: 10px;
+        align-items: flex-start;
+    }
 }
 
-[data-theme="system-red"] {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ff88;
-    --accent: #ff6600;
+/* Улучшенные заметки с категориями */
+.note-category {
+    display: inline-block;
+    padding: 2px 8px;
+    background: rgba(255, 0, 60, 0.2);
+    border: 1px solid var(--primary);
+    border-radius: 12px;
+    font-size: 0.7rem;
+    color: var(--primary);
+    margin-right: 8px;
+    transition: background 0.5s ease, border-color 0.5s ease, color 0.5s ease;
 }
 
-[data-theme="neural-matrix"] {
-    --primary: #00ff88;
-    --primary-dark: #00cc6c;
-    --primary-light: #33ff99;
-    --secondary: #ff003c;
-    --accent: #0033ff;
-    --card-bg: rgba(0, 255, 136, 0.05);
-    --card-border: rgba(0, 255, 136, 0.3);
+.note-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 10px;
+    justify-content: flex-end;
 }
 
-[data-theme="dark-void"] {
-    --primary: #ff003c;
-    --primary-dark: #cc002f;
-    --primary-light: #ff3366;
-    --secondary: #00ffff;
-    --accent: #ff00ff;
-    --dark-bg: #000000;
-    --darker-bg: #000000;
+.note-priority {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 8px;
+    font-size: 0.7rem;
+    font-weight: bold;
 }
 
-[data-theme="cyber-purple"] {
-    --primary: #8a2be2;
-    --primary-dark: #7b1fa2;
-    --primary-light: #9c4dff;
-    --secondary: #00ffff;
-    --accent: #ff00ff;
-    --card-bg: rgba(138, 43, 226, 0.05);
-    --card-border: rgba(138, 43, 226, 0.3);
-}
-.system-display {
-    flex: 1;
-    background: rgba(255, 0, 60, 0.05);
-    border-radius: 15px;
-    border: 1px solid var(--card-border);
-    position: relative;
-    overflow: hidden;
+.priority-high {
+    background: rgba(255, 0, 34, 0.2);
+    color: var(--danger);
+    border: 1px solid var(--danger);
 }
 
-.system-frame {
-    position: absolute;
-    top: 10px;
-    left: 10px;
-    right: 10px;
-    bottom: 10px;
-    background: linear-gradient(135deg, rgba(255, 0, 60, 0.1) 0%, rgba(255, 102, 0, 0.1) 100%);
-    border-radius: 10px;
+.priority-normal {
+    background: rgba(255, 170, 0, 0.2);
+    color: var(--warning);
+    border: 1px solid var(--warning);
+}
+
+.priority-low {
+    background: rgba(0, 255, 102, 0.2);
+    color: var(--success);
+    border: 1px solid var(--success);
+}
+/* Стили для погоды */
+.weather-main {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+.weather-icon-large {
+    font-size: 4rem;
+    color: var(--primary);
+}
+
+.weather-info-main {
     display: flex;
     flex-direction: column;
+    gap: 5px;
 }
 
-.system-panel {
-    background: var(--card-bg);
-    backdrop-filter: blur(15px);
-    border-radius: 15px;
-    border: 1px solid var(--card-border);
-    box-shadow: var(--card-shadow);
-    position: relative;
-    overflow: hidden;
-}
-
-.system-panel::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, var(--primary), transparent);
-}
-
-/* Карта активности */
-.activity-map {
-    height: 300px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 10px;
-    border: 1px solid var(--card-border);
-    position: relative;
-    overflow: hidden;
-}
-
-.map-container {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
-}
-
-.map-coordinates {
-    position: absolute;
-    top: 15px;
-    left: 15px;
-    background: rgba(0, 0, 0, 0.8);
-    padding: 10px 15px;
-    border-radius: 6px;
-    border: 1px solid var(--primary);
+.weather-temp-large {
+    font-size: 3rem;
+    font-weight: bold;
     color: var(--text);
-    z-index: 2;
+}
+
+.weather-desc-large {
+    font-size: 1.2rem;
+    color: var(--text-dim);
+    text-transform: capitalize;
+}
+
+.weather-details {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 15px;
+}
+
+.weather-detail {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    font-size: 0.9rem;
+}
+
+.weather-detail i {
+    color: var(--primary);
+    width: 20px;
+}
+
+.weather-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: var(--danger);
+    text-align: center;
+    padding: 20px;
+}
+
+.weather-error i {
+    font-size: 2rem;
+}
+
+/* Адаптивность для погоды */
+@media (max-width: 768px) {
+    .weather-main {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .weather-details {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Анимации для сетевой карты */
+@keyframes nodePulse {
+    0%, 100% { 
+        transform: scale(1); 
+        opacity: 1; 
+    }
+    50% { 
+        transform: scale(1.3); 
+        opacity: 0.7; 
+    }
+}
+
+.node-pulse {
+    animation: nodePulse 2s infinite;
+}
+
+/* Улучшенные стили для поиска */
+.search-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.search-input-group input {
+    flex: 1;
+}
+
+.search-results {
+    min-height: 100px;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    padding: 15px;
+    border: 1px solid var(--card-border);
+    color: var(--text-dim);
+}
+
+/* Улучшенные стили для координат */
+.map-coordinates {
+    background: rgba(0, 0, 0, 0.8);
+    padding: 12px 15px;
+    border-radius: 8px;
+    border: 1px solid var(--primary);
+    backdrop-filter: blur(10px);
 }
 
 .coordinate {
     font-size: 0.8rem;
     margin-bottom: 5px;
+    font-family: 'Courier New', monospace;
 }
 
 .location {
     font-size: 0.9rem;
     font-weight: bold;
     color: var(--primary);
-    margin-top: 5px;
-}
-
-.map-overlay {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-image: 
-        radial-gradient(circle at 20% 30%, rgba(255, 0, 60, 0.1) 0%, transparent 50%),
-        radial-gradient(circle at 80% 70%, rgba(0, 255, 136, 0.1) 0%, transparent 50%);
-}
-
-.active-nodes {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.node {
-    position: absolute;
-    width: 12px;
-    height: 12px;
-    background: var(--primary);
-    border-radius: 50%;
-    box-shadow: 0 0 10px var(--primary);
-    animation: nodePulse 2s infinite;
-}
-
-.node:nth-child(1) { animation-delay: 0s; }
-.node:nth-child(2) { animation-delay: 0.7s; }
-.node:nth-child(3) { animation-delay: 1.4s; }
-
-@keyframes nodePulse {
-    0%, 100% { transform: scale(1); opacity: 1; }
-    50% { transform: scale(1.3); opacity: 0.7; }
-}
-
-/* Система безопасности */
-.access-input-group {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    margin: 20px 0;
-}
-
-.access-input {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-}
-
-.access-input label {
-    font-size: 0.9rem;
-    color: var(--text-dim);
-    font-weight: bold;
-}
-
-.access-level {
-    text-align: center;
-    padding: 10px;
-    background: rgba(0, 0, 0, 0.3);
-    border-radius: 6px;
-    margin: 10px 0;
-    font-weight: bold;
-}
-
-.system-status-card {
-    text-align: center;
-    padding: 20px;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
-    border: 1px solid var(--card-border);
-    height: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.system-status-card i {
-    font-size: 2rem;
-    color: var(--primary);
-    margin-bottom: 10px;
-}
-
-.system-status-card h4 {
-    margin: 10px 0;
-    color: var(--text);
-}
-
-.system-status {
-    padding: 5px 10px;
-    border-radius: 15px;
-    font-size: 0.8rem;
-    font-weight: bold;
-    margin: 10px 0;
-}
-
-.system-status.active {
-    background: rgba(0, 255, 102, 0.2);
-    color: var(--success);
-    border: 1px solid var(--success);
-}
-
-.system-status:not(.active) {
-    background: rgba(255, 170, 0, 0.2);
-    color: var(--warning);
-    border: 1px solid var(--warning);
-}
-
-/* Голосовые настройки */
-.voice-controls {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    margin-bottom: 20px;
-}
-
-.voice-test {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-top: 20px;
-    padding-top: 20px;
-    border-top: 1px solid var(--card-border);
-}
-
-.voice-info {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    color: var(--text-dim);
-    font-size: 0.9rem;
-}
-
-.voice-info i {
-    color: var(--primary);
-}
-
-/* Графики */
-.chart-container {
-    width: 100%;
-    height: 200px;
-    padding: 20px;
-}
-
-/* Анимации */
-@keyframes systemActivate {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0.7); }
-    50% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(255, 0, 60, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(255, 0, 60, 0); }
-}
-
-.system-activating {
-    animation: systemActivate 0.6s ease;
-}
-
-.theme-preview.system-red {
-    background: linear-gradient(135deg, #ff003c, #ff6600);
-}
-
-.theme-preview.neural-matrix {
-    background: linear-gradient(135deg, #00ff88, #0033ff);
-}
-
-.theme-preview.dark-void {
-    background: linear-gradient(135deg, #000000, #ff003c);
-}
-
-.theme-preview.cyber-purple {
-    background: linear-gradient(135deg, #8a2be2, #00ffff);
+    margin-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 8px;
 }

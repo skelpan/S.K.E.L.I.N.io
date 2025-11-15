@@ -10,7 +10,7 @@
     <meta name="theme-color" content="#ff003c">
     <meta name="description" content="S.K.E.L.I.N - Самообучающаяся Система Единица Личности И Нейронов">
 </head>
-<body>
+<body data-theme="system-red">
     <!-- Анимированный фон -->
     <div class="cyber-grid"></div>
     <div class="particles-container" id="particles"></div>
@@ -45,6 +45,14 @@
                 <button class="nav-btn" data-section="security">
                     <i class="fas fa-shield-alt"></i>
                     <span>Безопасность</span>
+                </button>
+                <button class="nav-btn" data-section="weather">
+                    <i class="fas fa-cloud-sun"></i>
+                    <span>Погода</span>
+                </button>
+                <button class="nav-btn" data-section="notes">
+                    <i class="fas fa-sticky-note"></i>
+                    <span>Заметки</span>
                 </button>
                 <button class="nav-btn" data-section="settings">
                     <i class="fas fa-cog"></i>
@@ -159,6 +167,12 @@
                         <button class="action-btn" data-command="показать карту" data-tooltip="Карта">
                             <i class="fas fa-map-marked-alt"></i>
                         </button>
+                        <button class="action-btn" data-command="погода" data-tooltip="Погода">
+                            <i class="fas fa-cloud-sun"></i>
+                        </button>
+                        <button class="action-btn" data-command="заметки" data-tooltip="Заметки">
+                            <i class="fas fa-sticky-note"></i>
+                        </button>
                         <button class="action-btn" data-command="команды" data-tooltip="Команды">
                             <i class="fas fa-terminal"></i>
                         </button>
@@ -182,6 +196,27 @@
                             <div class="system-clock" id="system-clock">--:--:--</div>
                             <div class="system-date" id="system-date">-- --- ----</div>
                             <div class="time-status">Синхронизировано</div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Виджет погоды -->
+                <div class="widget system-panel">
+                    <div class="widget-header">
+                        <i class="fas fa-cloud-sun"></i>
+                        <span>ПОГОДА</span>
+                        <div class="widget-actions">
+                            <button class="icon-btn" id="refresh-weather">
+                                <i class="fas fa-sync-alt"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="widget-content">
+                        <div class="weather-widget" id="weather-widget">
+                            <div class="weather-loading">
+                                <div class="system-spinner"></div>
+                                <span>ПОЛУЧЕНИЕ ДАННЫХ...</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -382,9 +417,7 @@
                             </div>
                             <div class="map-overlay">
                                 <div class="active-nodes">
-                                    <div class="node" style="top: 30%; left: 40%;"></div>
-                                    <div class="node" style="top: 60%; left: 70%;"></div>
-                                    <div class="node" style="top: 45%; left: 25%;"></div>
+                                    <!-- Сетевые узлы будут добавлены через JavaScript -->
                                 </div>
                             </div>
                         </div>
@@ -475,6 +508,119 @@
             </div>
         </section>
 
+        <!-- Погода -->
+        <section id="weather-section" class="section">
+            <div class="weather-dashboard">
+                <div class="weather-card wide">
+                    <h3><i class="fas fa-cloud-sun"></i> Текущая погода</h3>
+                    <div class="weather-content">
+                        <div class="current-weather" id="current-weather">
+                            <div class="weather-loading">
+                                <div class="system-spinner"></div>
+                                <span>ПОЛУЧЕНИЕ ДАННЫХ О ПОГОДЕ...</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="weather-card">
+                    <h3><i class="fas fa-search-location"></i> Поиск по городу</h3>
+                    <div class="weather-search">
+                        <div class="search-input-group">
+                            <input type="text" id="city-search" placeholder="Введите название города" class="weather-input">
+                            <button class="btn primary" id="search-weather">
+                                <i class="fas fa-search"></i> Поиск
+                            </button>
+                        </div>
+                        <div class="search-results" id="search-results"></div>
+                    </div>
+                </div>
+
+                <div class="weather-card">
+                    <h3><i class="fas fa-info-circle"></i> Информация о погоде</h3>
+                    <div class="weather-info">
+                        <div class="info-item">
+                            <i class="fas fa-temperature-low"></i>
+                            <div class="info-content">
+                                <span class="info-label">Температура</span>
+                                <span class="info-value" id="info-temp">--°C</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-tint"></i>
+                            <div class="info-content">
+                                <span class="info-label">Влажность</span>
+                                <span class="info-value" id="info-humidity">--%</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-wind"></i>
+                            <div class="info-content">
+                                <span class="info-label">Скорость ветра</span>
+                                <span class="info-value" id="info-wind">-- м/с</span>
+                            </div>
+                        </div>
+                        <div class="info-item">
+                            <i class="fas fa-compress-alt"></i>
+                            <div class="info-content">
+                                <span class="info-label">Давление</span>
+                                <span class="info-value" id="info-pressure">-- hPa</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Заметки -->
+        <section id="notes-section" class="section">
+            <div class="notes-dashboard">
+                <div class="notes-card wide">
+                    <h3><i class="fas fa-sticky-note"></i> Мои заметки</h3>
+                    <div class="notes-controls">
+                        <div class="notes-input-group">
+                            <input type="text" id="note-title" placeholder="Заголовок заметки" class="notes-input">
+                            <textarea id="note-content" placeholder="Текст заметки..." class="notes-textarea"></textarea>
+                            <button class="btn primary" id="add-note">
+                                <i class="fas fa-plus"></i> Добавить заметку
+                            </button>
+                        </div>
+                    </div>
+                    <div class="notes-container" id="notes-container">
+                        <div class="notes-empty">
+                            <i class="fas fa-sticky-note"></i>
+                            <p>У вас пока нет заметок</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="notes-card">
+                    <h3><i class="fas fa-cog"></i> Управление заметками</h3>
+                    <div class="notes-management">
+                        <button class="btn secondary" id="export-notes">
+                            <i class="fas fa-download"></i> Экспорт
+                        </button>
+                        <button class="btn secondary" id="import-notes">
+                            <i class="fas fa-upload"></i> Импорт
+                        </button>
+                        <button class="btn danger" id="clear-notes">
+                            <i class="fas fa-trash"></i> Очистить все
+                        </button>
+                    </div>
+                    <div class="notes-stats">
+                        <div class="stat-item">
+                            <span class="stat-label">Всего заметок:</span>
+                            <span class="stat-value" id="total-notes">0</span>
+                        </div>
+                        <div class="stat-item">
+                            <span class="stat-label">Последнее обновление:</span>
+                            <span class="stat-value" id="last-update">--</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
         <!-- Настройки -->
         <section id="settings-section" class="section">
             <div class="settings-panel">
@@ -489,13 +635,21 @@
                             <div class="theme-preview neural-matrix"></div>
                             <span>Нейронная матрица</span>
                         </div>
+                        <div class="theme-option" data-theme="cyber-purple">
+                            <div class="theme-preview cyber-purple"></div>
+                            <span>Кибер-фиолетовый</span>
+                        </div>
                         <div class="theme-option" data-theme="dark-void">
                             <div class="theme-preview dark-void"></div>
                             <span>Темная пустота</span>
                         </div>
-                        <div class="theme-option" data-theme="cyber-purple">
-                            <div class="theme-preview cyber-purple"></div>
-                            <span>Кибер-фиолетовый</span>
+                        <div class="theme-option" data-theme="quantum-blue">
+                            <div class="theme-preview quantum-blue"></div>
+                            <span>Квантовый синий</span>
+                        </div>
+                        <div class="theme-option" data-theme="neon-green">
+                            <div class="theme-preview neon-green"></div>
+                            <span>Неоновый зеленый</span>
                         </div>
                     </div>
                 </div>
@@ -553,18 +707,40 @@
                             <div class="command-item">"активировать защиту" - включить безопасность</div>
                             <div class="command-item">"показать системы" - список модулей</div>
                             <div class="command-item">"нейронный анализ" - анализ данных</div>
+                            <div class="command-item">"оптимизировать сети" - улучшить производительность</div>
+                            <div class="command-item">"перезагрузить ядро" - перезапуск системы</div>
                         </div>
                         <div class="command-category">
                             <h4>Нейронные сети:</h4>
                             <div class="command-item">"обучение" - запустить обучение</div>
                             <div class="command-item">"оптимизация" - оптимизировать сети</div>
                             <div class="command-item">"анализ данных" - обработка информации</div>
+                            <div class="command-item">"распознавание образов" - анализ паттернов</div>
+                            <div class="command-item">"глубокое обучение" - активация ИИ</div>
                         </div>
                         <div class="command-category">
                             <h4>Безопасность:</h4>
                             <div class="command-item">"ключ доступа" - аутентификация</div>
                             <div class="command-item">"мониторинг" - статус защиты</div>
                             <div class="command-item">"сканирование" - проверка системы</div>
+                            <div class="command-item">"повысить безопасность" - усилить защиту</div>
+                            <div class="command-item">"проверить угрозы" - анализ рисков</div>
+                        </div>
+                        <div class="command-category">
+                            <h4>Погода и заметки:</h4>
+                            <div class="command-item">"погода" - текущая погода</div>
+                            <div class="command-item">"погода в [город]" - погода в указанном городе</div>
+                            <div class="command-item">"заметки" - просмотр заметок</div>
+                            <div class="command-item">"новая заметка" - создать заметку</div>
+                            <div class="command-item">"удалить заметки" - очистить все заметки</div>
+                        </div>
+                        <div class="command-category">
+                            <h4>Навигация:</h4>
+                            <div class="command-item">"главная" - перейти на главную</div>
+                            <div class="command-item">"аналитика" - показать аналитику</div>
+                            <div class="command-item">"системы" - управление системами</div>
+                            <div class="command-item">"безопасность" - настройки безопасности</div>
+                            <div class="command-item">"настройки" - параметры системы</div>
                         </div>
                     </div>
                 </div>
@@ -575,8 +751,12 @@
     <!-- Системные уведомления -->
     <div class="system-notifications" id="system-notifications"></div>
 
+    <!-- Скрытый элемент для импорта файлов -->
+    <input type="file" id="import-file" accept=".json" style="display: none;">
+
     <!-- Подключаем Chart.js для графиков -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="network-map.js"></script>
     <script src="script.js"></script>
 </body>
 </html>
